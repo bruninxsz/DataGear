@@ -1,7 +1,7 @@
 <template>
-  <header class="bg-zinc-800 flex flex-col">
-  <div class=" flex justify-center text-xl gap-14 lg:justify-between p-1">
-    <div class="items-center lg:ml-54"><img src="../assets/logo.png" class="w-32 lg:w-40"></div>
+  <header class="bg-zinc-900 flex flex-col border-b-1 border-sky-300 shadow-sm shadow-sky-300">
+  <div class=" flex justify-center text-xl gap-10 lg:justify-between p-1">
+    <div class="items-center lg:ml-54"><img src="../assets/logo.png" class="min-w-24 lg:w-42"></div>
     <nav class="flex justify-center gap-3 lg:gap-12 text-white text-xs lg:text-lg font-normal items-center">
       <a href="" class="relative inline-block
          after:absolute after:left-1/2 after:-bottom-2
@@ -33,10 +33,10 @@
          hover:after:w-8 hover:text-sky-300">
         Contato
       </a>
-      <router-link to="/login" class="relative rounded-md border border-white font-normal px-5 py-2 text-white transition-colors duration-300
+      <router-link to="/login" class="relative rounded-md border border-white font-normal px-3 lg:px-5 py-2 text-white transition-colors duration-600
                before:absolute before:-inset-[1px] before:rounded-md before:border-2 before:border-sky-500
                before:[clip-path:inset(0_0_100%_0)] hover:before:[clip-path:inset(0_0_0_0)]
-               before:transition-all before:duration-500 hover:text-sky-300 hover:before:shadow-sm shadow-sky-300 lg:mr-54">
+               before:transition-all before:duration-500 hover:text-sky-300 hover:before:shadow-sm shadow-sky-300 mr-2 lg:mr-54">
         Entrar
       </router-link>
     </nav>
