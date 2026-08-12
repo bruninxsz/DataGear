@@ -1,7 +1,7 @@
 <template>
   <header class="bg-zinc-900 flex flex-col border-b-1 border-sky-300 shadow-sm shadow-sky-300">
   <div class=" flex justify-center text-xl gap-10 lg:justify-between p-1">
-    <div class="items-center lg:ml-54"><img src="../assets/logo.png" class="min-w-24 lg:w-42"></div>
+    <div class="items-center lg:ml-54"><img src="../assets/logo.png" class="min-w-24 lg:w-42 hover:scale-[1.05] duration-300"></div>
     <nav class="flex justify-center gap-3 lg:gap-12 text-white text-xs lg:text-lg font-normal items-center">
       <a href="" class="relative inline-block
          after:absolute after:left-1/2 after:-bottom-2
