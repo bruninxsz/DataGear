@@ -1,38 +1,54 @@
-# Bruno - DataGear
+# 🚀 DataGear CTI
 
-This template should help get you started developing with Vue 3 in Vite.
+> Sistema web inteligente para higienização de dados, análise de carteira e geração de insights estratégicos a partir de planilhas operacionais da CTI Comunicação de Dados e Tecnologia LTDA.
 
-## Recommended IDE Setup
+---
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## 📌 Sobre o Projeto
 
-## Recommended Browser Setup
+A **Provedor CTI** mantinha sua base de clientes centralizada em planilhas Excel gerenciadas manualmente. Esse modelo gerava gargalos como inconsistências de digitação (ex: *"IND."*, *"Industria"*, *"INDUSTRIA"* para o mesmo segmento), campos em branco e falta de visibilidade sobre o perfil da carteira.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+O **DataGear CTI** foi desenvolvido para resolver esse problema, transformando arquivos brutos `.xlsx`/`.csv` em um ecossistema web moderno. O sistema realiza o tratamento automático dos dados (ETL) e apresenta métricas estratégicas em tempo real através de dashboards interativos.
 
-## Customize configuration
+---
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## ✨ Funcionalidades Principais
 
-## Project Setup
+* 🧹 **Higienização Automática de Dados (ETL):** Padronização de textos, remoção de acentuação/caixa mista e tratamento de duplicidades na importação.
+* 📊 **Dashboards Dinâmicos:** Visualização instantânea de métricas e gráficos sobre a base de clientes:
+  * Concentração por segmento de atuação (Indústria, Comércio, Serviços).
+  * Distribuição da carteira por nível de cliente (A, B e C).
+  * Serviços mais contratados e adesão de pacotes.
+  * Performance e distribuição da carteira por consultor.
+* 🔍 **Filtros Avançados:** Segmentação de dados por faixa de faturamento, consultor, nível ou serviço contratado.
+* 📝 **Gestão de Clientes (CRUD):** Interface para cadastro e edição manual com campos padronizados para evitar novas inconsistências.
+* 📄 **Exportação de Relatórios:** Geração de relatórios consolidados para reuniões e tomadas de decisão.
 
-```sh
-npm install
-```
+---
 
-### Compile and Hot-Reload for Development
+## 🛠️ Tecnologias Utilizadas
 
-```sh
-npm run dev
-```
+**Front-end:**
+* **Vue.js 3** (Composition API)
+* **Tailwind CSS** (Estilização responsiva e UI tecnológica)
+* **Vue Router** (Navegação SPA)
 
-### Compile and Minify for Production
+**Back-end & Banco de Dados (Sugerido/Implementado):**
+* **Node.js / Python** (Módulo de tratamento de dados e API REST)
+* **PostgreSQL / MySQL** (Armazenamento relacional dos dados higienizados)
 
-```sh
-npm run build
-```
+---
+
+## 🚀 Como Executar o Projeto
+
+### Pré-requisitos
+
+Antes de começar, você precisará ter instalado em sua máquina:
+* [Node.js](https://nodejs.org/) (versão 18 ou superior)
+* [Git](https://git-scm.com/)
+
+### Passo a Passo
+
+1. **Clone o repositório:**
+   ```bash
+   git clone [https://github.com/seu-usuario/datagear-cti.git](https://github.com/seu-usuario/datagear-cti.git)
