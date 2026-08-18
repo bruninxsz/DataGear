@@ -3,8 +3,8 @@
     class="min-h-screen bg-zinc-900 text-white flex flex-col gap-8 md:gap-16 lg:gap-32 font-sans selection:bg-cyan-500 selection:text-zinc-900">
     <Header />
     <main class="flex-1 flex items-center flex-col gap-24 md:gap-48 lg:gap-60 px-6 py-12 lg:py-24">
-      <section id="apresentacao"
-        class="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-16">
+      <section id="apresentacao" 
+        class="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-16" >
 
         <!-- Conteúdo do Texto -->
         <div class="flex flex-col gap-6 text-center lg:text-left max-w-2xl">
@@ -43,8 +43,8 @@
       </section>
 
       <!-- Section Cards -->
-      <section id="cards" class="flex flex-col gap-10 md:gap-16 lg:gap-32 min-w-xs">
-        <h2 class="bg-gradient-to-b from-cyan-500 to-cyan-300 bg-clip-text text-transparent text-md md:text-3xl lg:text-4xl font-extrabold text-center">
+      <section id="cards" class="flex flex-col gap-10 md:gap-16 lg:gap-32 min-w-xs md:max-w-xl lg:max-w-7xl">
+        <h2 class="bg-gradient-to-b from-cyan-500 to-cyan-100 bg-clip-text text-transparent hover:scale-[1.01] duration-300 text-lg md:text-3xl lg:text-4xl font-extrabold text-center">
           Conheça as funcionalidades da plataforma
         </h2>
 
@@ -116,6 +116,18 @@
 
         </div>
       </section>
+
+      <!-- Section Contato -->
+      <section id="contato" class="flex justify-between min-w-sm md:min-w-2xl lg:min-w-5xl">
+        <div class="flex flex-col gap-2 hover:scale-[1.03] duration-500 mt-8">
+          <h2 class="text-xl md:text-4xl lg:text-6xl font-bold">Dúvidas?</h2>
+          <h2 class="text-xl md:text-4xl lg:text-6xl font-extrabold bg-gradient-to-r from-cyan-500 to-sky-200 bg-clip-text text-transparent">Contate-nos</h2>
+        </div>
+        <form class="flex flex-col gap-6">
+          <input type="email" class="border border-cyan-200 rounded-lg w-60 md:w-90 lg:w-sm py-3 px-2 text-sm lg:text-base" placeholder="Digite o seu e-mail:">
+          <input type="text" class="border border-cyan-200 rounded-lg w-60 md:w-90 lg:w-sm py-3 px-2 h-30 text-sm lg:text-base" placeholder="Deixe aqui a sua dúvida:">
+        </form>
+      </section>  
     </main>
   </div>
 </template>
@@ -123,3 +135,4 @@
 <script setup>
 import Header from "../components/Header.vue"
 </script>
+
