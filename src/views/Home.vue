@@ -22,9 +22,9 @@
 
           <!-- Ações / CTAs -->
           <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
-            <router-link to="/login"
-              class="relative rounded-lg font-medium px-6 py-3 bg-cyan-500 text-zinc-900 hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)]">
-              Transformar Minhas Planilhas
+            <router-link to="/cadastro"
+              class="relative rounded-lg font-medium px-9 py-4 bg-cyan-500 text-zinc-900 hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)]">
+              Cadastre-se
             </router-link>
           </div>
         </div>
@@ -43,8 +43,8 @@
       </section>
 
       <!-- Section Cards -->
-      <section id="cards" class="flex flex-col gap-10 md:gap-16 lg:gap-32 min-w-xs md:max-w-xl lg:max-w-7xl">
-        <h2 class="bg-gradient-to-b from-cyan-500 to-cyan-100 bg-clip-text text-transparent hover:scale-[1.01] duration-300 text-lg md:text-3xl lg:text-4xl font-extrabold text-center">
+      <section id="cards" class="flex flex-col gap-12 md:gap-16 lg:gap-32 min-w-xs max-w-xs md:max-w-xl lg:max-w-7xl">
+        <h2 class="bg-gradient-to-b from-cyan-500 to-cyan-100 bg-clip-text text-transparent hover:scale-[1.01] duration-300 text-xl md:text-3xl lg:text-4xl font-extrabold text-center">
           Conheça as funcionalidades da plataforma
         </h2>
 
@@ -118,21 +118,26 @@
       </section>
 
       <!-- Section Contato -->
-      <section id="contato" class="flex justify-between min-w-sm md:min-w-2xl lg:min-w-5xl">
+      <section id="contato" class="flex justify-between gap-8 md:gap-0 lg:gap-0 md:min-w-2xl lg:min-w-5xl">
         <div class="flex flex-col gap-2 hover:scale-[1.03] duration-500 mt-8">
-          <h2 class="text-xl md:text-4xl lg:text-6xl font-bold">Dúvidas?</h2>
-          <h2 class="text-xl md:text-4xl lg:text-6xl font-extrabold bg-gradient-to-r from-cyan-500 to-sky-200 bg-clip-text text-transparent">Contate-nos</h2>
+          <h2 class="text-2xl md:text-4xl lg:text-6xl font-bold">Dúvidas?</h2>
+          <h2 class="text-2xl md:text-4xl lg:text-6xl font-extrabold bg-gradient-to-r from-cyan-500 to-sky-200 bg-clip-text text-transparent">Contate-nos</h2>
         </div>
         <form class="flex flex-col gap-6">
-          <input type="email" class="border border-cyan-200 rounded-lg w-60 md:w-90 lg:w-sm py-3 px-2 text-sm lg:text-base" placeholder="Digite o seu e-mail:">
-          <input type="text" class="border border-cyan-200 rounded-lg w-60 md:w-90 lg:w-sm py-3 px-2 h-30 text-sm lg:text-base" placeholder="Deixe aqui a sua dúvida:">
+          <input type="email" class="border border-cyan-200 rounded-lg w-50 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base" placeholder="Digite o seu e-mail:">
+          <input type="text" class="border border-cyan-200 rounded-lg w-50 md:w-90 lg:w-md py-3 px-2 h-30 lg:h-40 text-sm lg:text-base" placeholder="Deixe aqui a sua dúvida:">
+          <button type="submit" class="bg-gradient-to-b from-cyan-500 to-sky-200 text-zinc-900 opacity-80 border border-white py-2 rounded-lg font-medium hover:shadow-md duration-300 shadow-cyan-300 duration-400"> Enviar </button>
         </form>
       </section>  
     </main>
+    <footer>
+      <Footer />
+    </footer>
   </div>
 </template>
 
 <script setup>
 import Header from "../components/Header.vue"
+import Footer from "../components/Footer.vue"
 </script>
 
