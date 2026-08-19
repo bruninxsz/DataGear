@@ -1,7 +1,7 @@
 <template>
-  <header class="bg-zinc-900 flex flex-col border-b-1 border-sky-300 shadow-sm shadow-sky-300">
-  <div class=" flex justify-center text-xl gap-10 lg:justify-between sm:p-3 lg:p-1">
-    <div class="items-center lg:ml-54"><img src="../assets/logo.png" class="min-w-24 md:w-36 lg:w-42 hover:scale-[1.05] duration-300"></div>
+  <header class="bg-zinc-900 flex flex-col border-b-1 border-sky-300 shadow-sm shadow-sky-300"> 
+  <div class=" flex justify-center text-xl gap-10 md:gap-24 lg:justify-between sm:p-3 lg:p-1">
+    <div class="items-center lg:ml-54"><img src="../assets/logo.png" class="min-w-24 max-w-32 md:w-36 lg:w-42 lg:max-w-42 hover:scale-[1.05] duration-300"></div>
     <nav class="flex justify-center gap-3 md:gap-8 lg:gap-12 text-white text-xs md:text-sm lg:text-lg font-bold items-center">
       <a href="#cards" class="relative inline-block
          after:absolute after:left-1/2 after:-bottom-2
@@ -13,7 +13,7 @@
          hover:after:w-8 hover:text-sky-300">
         Funcionalidades
       </a>
-      <a href="#cards" class="relative inline-block
+      <a href="#contato" class="relative inline-block
          after:absolute after:left-1/2 after:-bottom-2
          after:h-[2px] after:w-0
          after:-translate-x-1/2
@@ -34,3 +34,9 @@
   </header>
 </template>
 
+<script setup>
+import {ref, onMounted} from 'vue';
+
+const actualPage = ref('')
+
+</script>
