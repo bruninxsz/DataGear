@@ -42,7 +42,7 @@
     <!-- Header após logar -->
 
     <nav v-else
-      class="flex justify-center gap-3 md:gap-12 lg:gap-15 text-white text-xs md:text-sm lg:text-lg font-bold items-center">
+      class="flex justify-center gap-3 md:gap-12 lg:gap-15 text-zinc-500 text-xs md:text-sm lg:text-lg font-semibold items-center">
       <router-link to="/Upload" class="relative inline-block
          after:absolute after:left-1/2 after:-bottom-2
          after:h-[2px] after:w-0
@@ -82,7 +82,7 @@
          after:bg-cyan-400
          after:shadow-[0_0_10px_#22d3ee]
          after:transition-all after:duration-300
-         hover:after:w-8 hover:text-sky-300 lg:ml-4 lg:mr-10">
+         hover:after:w-8 hover:text-sky-300 ml-3 lg:mr-8">
         Sair
       </router-link>
     </nav>

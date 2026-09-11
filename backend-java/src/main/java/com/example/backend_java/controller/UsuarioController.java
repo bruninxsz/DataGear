@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.backend_java.dto.UsuarioDTO;
+import com.example.backend_java.model.Usuario;
+
 import jakarta.validation.Valid;
 
 @RestController
@@ -18,26 +21,24 @@ import jakarta.validation.Valid;
 public class UsuarioController {
 
     @PostMapping
-    public Usuario criar(
-            @Valid @RequestBody UsuarioDTO dto) {
-        // ...
+    public Usuario criar(@Valid @RequestBody UsuarioDTO dto) {
+        return null;
     }
 
     @GetMapping
     public List<Usuario> listar() {
-        // ...
+        return null;
     }
 
     @PutMapping("/{id}")
     public Usuario atualizar(
             @PathVariable Long id,
             @RequestBody UsuarioDTO dto) {
-        // ...
+        return null;
     }
 
     @DeleteMapping("/{id}")
-    public void remover(
-            @PathVariable Long id) {
-        // ...
+    public void remover(@PathVariable Long id) {
+        // não precisa retornar nada
     }
 }
