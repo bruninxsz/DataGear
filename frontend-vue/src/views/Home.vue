@@ -50,7 +50,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-12 lg:gap-18 items-center">
 
-          <div class="flex flex-col gap-3 rounded-lg px-4 py-14 shadow-xs hover:shadow-md duration-400 shadow-cyan-500">
+          <div class="flex flex-col gap-3 rounded-lg px-4 py-14 shadow-xs hover:shadow-md duration-400 shadow-cyan-500/20">
             <h2 class="text-cyan-200 font-semibold text-lg lg:text-xl mb-3">
               Tratamento de Dados
             </h2>
@@ -60,7 +60,7 @@
             </p>
           </div>
 
-          <div class="flex flex-col gap-3 rounded-lg px-4 py-14 shadow-xs hover:shadow-md duration-400 shadow-cyan-500">
+          <div class="flex flex-col gap-3 rounded-lg px-4 py-14 shadow-xs hover:shadow-md duration-400 shadow-cyan-500/20">
             <h2 class="text-cyan-200 font-semibold text-lg lg:text-xl mb-3">
               Análise da Carteira
             </h2>
@@ -70,7 +70,7 @@
             </p>
           </div>
 
-          <div class="flex flex-col gap-3 rounded-lg px-4 py-14 shadow-xs hover:shadow-md duration-400 shadow-cyan-500">
+          <div class="flex flex-col gap-3 rounded-lg px-4 py-14 shadow-xs hover:shadow-md duration-400 shadow-cyan-500/20">
             <h2 class="text-cyan-200 font-semibold text-lg lg:text-xl mb-3">
               Segmentação de Clientes
             </h2>
@@ -84,7 +84,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-12 lg:gap-24 items-center">
 
-          <div class="flex flex-col gap-3 rounded-lg px-5 py-14 shadow-xs hover:shadow-md duration-400 shadow-cyan-500">
+          <div class="flex flex-col gap-3 rounded-lg px-5 py-14 shadow-xs hover:shadow-md duration-400 shadow-cyan-500/20">
             <h2 class="text-cyan-200 font-semibold text-lg lg:text-xl mb-3">
               Serviços Mais Contratados
             </h2>
@@ -94,7 +94,7 @@
             </p>
           </div>
 
-          <div class="flex flex-col gap-3 rounded-lg px-5 py-14 shadow-xs hover:shadow-md duration-400 shadow-cyan-500">
+          <div class="flex flex-col gap-3 rounded-lg px-5 py-14 shadow-xs hover:shadow-md duration-400 shadow-cyan-500/20">
             <h2 class="text-cyan-200 font-semibold text-lg lg:text-xl mb-3">
               Insights Estratégicos
             </h2>
@@ -104,7 +104,7 @@
             </p>
           </div>
 
-          <div class="flex flex-col gap-3 rounded-lg px-5 py-14 shadow-xs hover:shadow-md duration-400 shadow-cyan-500">
+          <div class="flex flex-col gap-3 rounded-lg px-5 py-14 shadow-xs hover:shadow-md duration-400 shadow-cyan-500/20">
             <h2 class="text-cyan-200 font-semibold text-lg lg:text-xl mb-3">
               Apoio à Decisão
             </h2>

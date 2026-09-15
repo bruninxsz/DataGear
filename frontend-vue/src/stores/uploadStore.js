@@ -2,15 +2,14 @@ import { defineStore } from 'pinia'
 import * as XLSX from 'xlsx'
 
 export const useUploadStore = defineStore('upload', {
-  // STATE: arquivo e dados lidos da planilha.
   state: () => ({
     arquivo: null,
     dadosOriginais: [],
     dadosTratados: [],
-    erro: ''
+    erro: '',
+    processando: false
   }),
 
-  // GETTERS: informações derivadas do state.
   getters: {
     totalLinhas: (state) => state.dadosTratados.length,
 
@@ -25,26 +24,45 @@ export const useUploadStore = defineStore('upload', {
     }
   },
 
-  // ACTIONS: leitura, tratamento e limpeza.
   actions: {
-    async lerArquivo(file) {
+    // Apenas recebe o arquivo
+    selecionarArquivo(file) {
       this.erro = ''
-      this.arquivo = file
       this.dadosOriginais = []
       this.dadosTratados = []
 
-      if (!file) return
+      if (!file) {
+        this.arquivo = null
+        return
+      }
 
       const extensao = file.name.split('.').pop()?.toLowerCase()
 
       if (!['xlsx', 'xls', 'csv'].includes(extensao)) {
+        this.arquivo = null
         this.erro = 'Formato inválido. Use XLSX, XLS ou CSV.'
         return
       }
 
+      this.arquivo = file
+    },
+
+    // Processa o arquivo somente quando o botão for clicado
+    async processarArquivo() {
+      if (!this.arquivo) {
+        this.erro = 'Selecione um arquivo antes de processar.'
+        return
+      }
+
+      this.processando = true
+      this.erro = ''
+
       try {
-        const buffer = await file.arrayBuffer()
-        const workbook = XLSX.read(buffer, { type: 'array' })
+        const buffer = await this.arquivo.arrayBuffer()
+
+        const workbook = XLSX.read(buffer, {
+          type: 'array'
+        })
 
         const nomePrimeiraAba = workbook.SheetNames[0]
         const worksheet = workbook.Sheets[nomePrimeiraAba]
@@ -54,15 +72,19 @@ export const useUploadStore = defineStore('upload', {
         })
 
         this.tratarDados()
+
       } catch (error) {
         console.error(error)
-        this.erro = 'Não foi possível ler a planilha.'
+        this.erro = 'Não foi possível processar a planilha.'
+        this.dadosOriginais = []
+        this.dadosTratados = []
+
+      } finally {
+        this.processando = false
       }
     },
 
     tratarDados() {
-      // Tratamento leve apenas para aula de Front-end.
-      // A Ciência de Dados completa ficará em Python/Pandas.
       this.dadosTratados = this.dadosOriginais.map((linha) => {
         const novaLinha = {}
 
@@ -74,8 +96,11 @@ export const useUploadStore = defineStore('upload', {
           }
         }
 
+        // Tratamento do segmento
         if (typeof novaLinha.segmento === 'string') {
-          const segmento = novaLinha.segmento.trim().toUpperCase()
+          const segmento = novaLinha.segmento
+            .trim()
+            .toUpperCase()
 
           const mapaSegmentos = {
             'IND.': 'Indústria',
@@ -87,11 +112,14 @@ export const useUploadStore = defineStore('upload', {
             'SERVIÇOS': 'Serviços'
           }
 
-          novaLinha.segmento = mapaSegmentos[segmento] || novaLinha.segmento
+          novaLinha.segmento =
+            mapaSegmentos[segmento] || novaLinha.segmento
         }
 
+        // Tratamento do nível do cliente
         if (typeof novaLinha.nivel_cliente === 'string') {
-          novaLinha.nivel_cliente = novaLinha.nivel_cliente.toUpperCase()
+          novaLinha.nivel_cliente =
+            novaLinha.nivel_cliente.toUpperCase()
         }
 
         return novaLinha
@@ -103,11 +131,7 @@ export const useUploadStore = defineStore('upload', {
       this.dadosOriginais = []
       this.dadosTratados = []
       this.erro = ''
+      this.processando = false
     }
-
-    // FUTURO:
-    // async enviarParaBackend() {
-    //   Aqui entrará Axios para enviar a planilha/dados ao Spring Boot.
-    // }
   }
 })

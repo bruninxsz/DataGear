@@ -61,7 +61,7 @@
          after:shadow-[0_0_10px_#22d3ee]
          after:transition-all after:duration-300
          hover:after:w-8 hover:text-sky-300">
-        Relatorios
+        Relatórios
       </router-link>
       <img src="../assets/logo.png"
         class="min-w-24 max-w-32 md:w-36 lg:w-42 lg:max-w-42 hover:scale-[1.05] duration-300">
@@ -73,7 +73,7 @@
          after:shadow-[0_0_10px_#22d3ee]
          after:transition-all after:duration-300
          hover:after:w-8 hover:text-sky-300">
-        Graficos
+        Gráficos
       </router-link>
       <router-link to="/" class="relative inline-block
          after:absolute after:left-1/2 after:-bottom-2
