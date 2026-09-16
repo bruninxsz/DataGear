@@ -1,34 +1,24 @@
 <template>
   <div
-    class="min-h-screen bg-zinc-900 text-white flex flex-col gap-4 md:gap-8 font-sans selection:bg-cyan-500 selection:text-zinc-900"
-  >
+    class="min-h-screen bg-zinc-900 text-white flex flex-col gap-4 md:gap-8 font-sans selection:bg-cyan-500 selection:text-zinc-900">
     <Header />
 
-    <main
-      class="flex-1 flex items-center flex-col gap-16 md:gap-24 lg:gap-28 px-6 py-12 lg:py-24"
-    >
+    <main class="flex-1 flex items-center flex-col gap-16 md:gap-24 lg:gap-28 px-6 py-12 lg:py-24">
       <!-- TÍTULO -->
       <section id="titulo" class="relative z-10">
-        <div
-          class="absolute bg-sky-200/60 rounded-full z-0 w-16 md:w-32 lg:w-64 h-12 blur-3xl"
-        ></div>
+        <div class="absolute bg-sky-200/60 rounded-full z-0 w-16 md:w-32 lg:w-64 h-12 blur-3xl"></div>
 
         <h1
-          class="relative z-10 font-bold bg-gradient-to-r from-sky-200 to-cyan-600 bg-clip-text text-transparent text-2xl md:text-4xl lg:text-5xl hover:scale-105 duration-300"
-        >
+          class="relative z-10 font-bold bg-gradient-to-r from-sky-200 to-cyan-600 bg-clip-text text-transparent text-2xl md:text-4xl lg:text-5xl hover:scale-105 duration-300">
           Relatórios
         </h1>
       </section>
 
       <!-- TOP CARDS -->
-      <section
-        id="topcards"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl"
-      >
+      <section id="topcards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl">
         <!-- Clientes -->
         <div
-          class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300"
-        >
+          class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300">
           <h2 class="text-cyan-200 font-semibold text-2xl lg:text-3xl">
             {{ dados.length }}
           </h2>
@@ -40,10 +30,9 @@
 
         <!-- Ticket médio -->
         <div
-          class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300"
-        >
+          class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300">
           <h2 class="text-cyan-200 font-semibold text-2xl lg:text-3xl">
-            R$ {{ticketMedio}}
+            R$ {{ ticketMedio }}
           </h2>
 
           <p class="text-gray-400 text-sm">
@@ -53,8 +42,7 @@
 
         <!-- Total arrecadado -->
         <div
-          class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300"
-        >
+          class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300">
           <h2 class="text-cyan-200 font-semibold text-2xl lg:text-3xl">
             R$ {{ totalVendas }}
           </h2>
@@ -66,10 +54,9 @@
 
         <!-- Maior venda -->
         <div
-          class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300"
-        >
+          class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300">
           <h2 class="text-cyan-200 font-semibold text-2xl lg:text-3xl">
-            R$ {{maiorVenda}}
+            R$ {{ maiorVenda }}
           </h2>
 
           <p class="text-gray-400 text-sm">
@@ -78,26 +65,115 @@
         </div>
       </section>
 
-      <!-- GRÁFICO -->
-      <section class="w-full max-w-7xl">
-        <div
-          class="bg-zinc-800 border border-zinc-400 rounded-xl p-6 md:p-8 shadow-sm shadow-cyan-500"
-        >
-          <div class="mb-6">
+      <!-- RESUMO -->
+      <section id="resumo" class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-7xl">
+        <!-- Menor venda -->
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
+          <p class="text-sm text-zinc-400 mb-2">
+            Menor venda registrada
+          </p>
+
+          <h2 class="text-2xl font-semibold text-white">
+            R$ {{ menorVenda.toLocaleString("pt-BR") }}
+          </h2>
+        </div>
+
+        <!-- Média de idade -->
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
+          <p class="text-sm text-zinc-400 mb-2">
+            Média de idade dos clientes
+          </p>
+
+          <h2 class="text-2xl font-semibold text-white">
+            {{ mediaIdade.toFixed(1) }} anos
+          </h2>
+        </div>
+
+        <!-- Maior segmento -->
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
+          <p class="text-sm text-zinc-400 mb-2">
+            Segmento com maior faturamento
+          </p>
+
+          <h2 class="text-2xl font-semibold text-cyan-200">
+            {{ segmentoMaiorFaturamento[0] }}
+          </h2>
+
+          <p class="text-sm text-zinc-500 mt-1">
+            R$ {{ segmentoMaiorFaturamento[1].toLocaleString("pt-BR") }}
+          </p>
+        </div>
+      </section>
+
+      <!-- RANKING -->
+      <section id="ranking" class="w-full max-w-7xl">
+        <div class="rounded-xl border border-zinc-800 overflow-hidden">
+          <div class="p-6 border-b border-zinc-800">
             <h2 class="text-xl md:text-2xl font-semibold">
-              Vendas por segmento
+              Ranking de vendas
             </h2>
 
             <p class="text-sm text-zinc-400 mt-1">
-              Distribuição do valor total de vendas entre os segmentos.
+              Clientes organizados pelo valor de vendas.
             </p>
           </div>
 
-          <div class="relative w-full h-80 md:h-96">
-            <canvas ref="grafico"></canvas>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-zinc-800">
+                <tr>
+                  <th class="px-6 py-4 text-left text-zinc-400">
+                    #
+                  </th>
+
+                  <th class="px-6 py-4 text-left text-zinc-400">
+                    Cliente
+                  </th>
+
+                  <th class="px-6 py-4 text-left text-zinc-400">
+                    Cidade
+                  </th>
+
+                  <th class="px-6 py-4 text-left text-zinc-400">
+                    Segmento
+                  </th>
+
+                  <th class="px-6 py-4 text-right text-zinc-400">
+                    Vendas
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr v-for="(cliente, index) in clientesOrdenados" :key="cliente.nome"
+                  class="border-t border-zinc-800 hover:bg-zinc-800/50 duration-200">
+                  <td class="px-6 py-4 text-zinc-500">
+                    {{ index + 1 }}
+                  </td>
+
+                  <td class="px-6 py-4 font-medium">
+                    {{ cliente.nome }}
+                  </td>
+
+                  <td class="px-6 py-4 text-zinc-400">
+                    {{ cliente.cidade }}
+                  </td>
+
+                  <td class="px-6 py-4 text-zinc-400">
+                    {{ cliente.segmento }}
+                  </td>
+
+                  <td class="px-6 py-4 text-right text-cyan-200 font-medium">
+                    R$ {{ cliente.vendas.toLocaleString("pt-BR") }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
+
+
     </main>
 
     <footer>
@@ -109,27 +185,6 @@
 <script setup>
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
-import { ref, onMounted } from "vue"
-import {
-  Chart,
-  BarController,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend
-} from "chart.js"
-
-Chart.register(
-  BarController,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend
-)
-
-const grafico = ref(null)
 
 const dados = [
   {
@@ -204,17 +259,27 @@ const dados = [
   }
 ]
 
-
-const maiorVenda = Math.max(
-  ...dados.map((cliente) => cliente.vendas)
-)
-
 const totalVendas = dados.reduce(
   (total, cliente) => total + cliente.vendas,
   0
 )
 
-const ticketMedio = totalVendas/dados.length
+const maiorVenda = Math.max(
+  ...dados.map((cliente) => cliente.vendas)
+)
+
+const menorVenda = Math.min(
+  ...dados.map((cliente) => cliente.vendas)
+)
+
+const mediaIdade =
+  dados.reduce((total, cliente) => total + cliente.idade, 0) / dados.length
+
+const clientesOrdenados = [...dados].sort(
+  (a, b) => b.vendas - a.vendas
+)
+
+const ticketMedio = totalVendas / dados.length
 
 const vendasPorSegmento = {}
 
@@ -228,57 +293,7 @@ dados.forEach((cliente) => {
   vendasPorSegmento[segmento] += cliente.vendas
 })
 
+const segmentoMaiorFaturamento = Object.entries(vendasPorSegmento)
+  .sort((a, b) => b[1] - a[1])[0]
 
-
-onMounted(() => {
-  new Chart(grafico.value, {
-    type: "bar",
-
-    data: {
-      labels: Object.keys(vendasPorSegmento),
-
-      datasets: [
-        {
-          label: "Vendas",
-          data: Object.values(vendasPorSegmento),
-          borderWidth: 1
-        }
-      ]
-    },
-
-    options: {
-  responsive: true,
-  maintainAspectRatio: false,
-
-  plugins: {
-    legend: {
-      labels: {
-        color: "#ffffff"
-      }
-    }
-  },
-  
-
-  scales: {
-    x: {
-      ticks: {
-        color: "#ffffff"
-      },
-      grid: {
-        color: "#3f3f46"
-      }
-    },
-
-    y: {
-      ticks: {
-        color: "#ffffff"
-      },
-      grid: {
-        color: "#3f3f46"
-      }
-    }
-  }
-}
-  })
-})
 </script>
