@@ -1,6 +1,8 @@
 package com.example.backend_java.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,11 +23,8 @@ public class Usuario {
 
     private String senhaHash;
 
-    @OneToOne(mappedBy = "cliente")
-    private Cliente cliente;
-
-    @OneToOne(mappedBy = "consultor")
-    private Consultor consultor;
+    @Enumerated(EnumType.STRING)
+    private Perfil perfil;
     
     public Usuario() {
     }
