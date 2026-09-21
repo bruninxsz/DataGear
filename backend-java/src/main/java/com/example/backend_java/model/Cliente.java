@@ -2,14 +2,7 @@ package com.example.backend_java.model;
 
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "clientes")
@@ -20,12 +13,17 @@ public class Cliente {
     private Long id;
 
     @Column(nullable = false, length = 150)
-    
     private String nome;
+
+    @Column(nullable = false, length = 150)
     private String email;
+
+    @Column(nullable = false, length = 150)
     private String segmento;
 
-    @OneToOne 
+    @ManyToOne
+    @JoinColumn(name = "consultor_id")
+    private Consultor consultor;
 
     @OneToMany(mappedBy = "cliente")
     private List<Contrato> contratos;
@@ -71,5 +69,13 @@ public class Cliente {
 
     public void setContratos(List<Contrato> contratos) {
         this.contratos = contratos;
+    }
+
+    public Consultor getConsultor(){
+        return consultor;
+    }
+
+    public void setConsultor(Consultor consultor){
+        this.consultor = consultor;
     }
 }

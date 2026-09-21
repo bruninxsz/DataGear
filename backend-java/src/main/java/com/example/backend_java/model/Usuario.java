@@ -1,13 +1,6 @@
 package com.example.backend_java.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "usuarios")
@@ -17,15 +10,15 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 150)
     private String nome;
-
+    
+    @Column(nullable = false, unique = true, length = 150)
     private String email;
 
+    @Column(nullable = false, length = 255)
     private String senhaHash;
 
-    @Enumerated(EnumType.STRING)
-    private Perfil perfil;
-    
     public Usuario() {
     }
     
@@ -60,5 +53,4 @@ public class Usuario {
     public String getSenhaHash() {
         return senhaHash;
     }
-
 }

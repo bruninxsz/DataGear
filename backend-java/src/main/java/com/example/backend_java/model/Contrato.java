@@ -12,12 +12,23 @@ public class Contrato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private LocalDate dataInicio;
+    
+    @Column(nullable = false)
     private LocalDate dataFim;
+
+    @Column(nullable = false)
     private BigDecimal valor;
+
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
+    @ManyToOne 
+    @JoinColumn (name = "servico_id")
+    private Servico servico;
 
     public Contrato() {
     }
@@ -60,5 +71,13 @@ public class Contrato {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public Servico getServico(){
+        return servico;
+    }
+
+    public void setServico(Servico servico){
+        this.servico = servico;
     }
 }
