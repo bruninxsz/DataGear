@@ -3,9 +3,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Cadastro from '../views/Cadastro.vue'
-import Relatorios from '../views/Relatorios.vue'
+import Relatorio from '../views/Relatorio.vue'
 import Upload from '../views/Upload.vue'
-import Graficos from '../views/Graficos.vue'
+import Dashboard from '../views/Dashboard.vue'
 
 const routes = [
     {
@@ -24,9 +24,9 @@ const routes = [
         component: Cadastro
     },
     {
-        path: '/relatorios',
-        name: 'relatorios',
-        component: Relatorios
+        path: '/relatorio',
+        name: 'relatorio',
+        component: Relatorio
     },
     {
         path: '/upload',
@@ -34,9 +34,9 @@ const routes = [
         component: Upload
     },
     {
-        path: '/Graficos',
-        name: 'Graficos',
-        component: Graficos
+        path: '/dashboard',
+        name: 'dashboard',
+        component: Dashboard
     }
 ]
 

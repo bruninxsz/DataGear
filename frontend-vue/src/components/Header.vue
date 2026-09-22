@@ -53,7 +53,7 @@
          hover:after:w-8 hover:text-sky-300">
         Upload
       </router-link>
-      <router-link to="/Relatorios" class="relative inline-block
+      <router-link to="/Relatorio" class="relative inline-block
          after:absolute after:left-1/2 after:-bottom-2
          after:h-[2px] after:w-0
          after:-translate-x-1/2
@@ -61,11 +61,11 @@
          after:shadow-[0_0_10px_#22d3ee]
          after:transition-all after:duration-300
          hover:after:w-8 hover:text-sky-300">
-        Relatórios
+        Relatório
       </router-link>
       <img src="../assets/logo.png"
         class="min-w-24 max-w-32 md:w-36 lg:w-42 lg:max-w-42 hover:scale-[1.05] duration-300">
-      <router-link to="/Graficos" class="relative inline-block
+      <router-link to="/Dashboard" class="relative inline-block
          after:absolute after:left-1/2 after:-bottom-2
          after:h-[2px] after:w-0
          after:-translate-x-1/2
@@ -73,7 +73,7 @@
          after:shadow-[0_0_10px_#22d3ee]
          after:transition-all after:duration-300
          hover:after:w-8 hover:text-sky-300">
-        Gráficos
+        Dashboard
       </router-link>
       <router-link to="/" class="relative inline-block
          after:absolute after:left-1/2 after:-bottom-2

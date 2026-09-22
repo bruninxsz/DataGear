@@ -74,33 +74,64 @@
         </button>
 
         <!-- RESULTADO -->
-        <div v-if="store.dadosTratados.length" class="text-center text-sm text-zinc-300">
-          <p>
-            Arquivo processado com sucesso!
+        <div v-if="store.validacaoRealizada"
+          class="w-full rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 text-center">
+          <p class="text-sm text-zinc-300">
+            Arquivo processado e validado com sucesso!
           </p>
 
-          <p class="text-cyan-400 mt-1">
-            {{ store.totalLinhas }} linhas ·
-            {{ store.totalColunas }} colunas
+          <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-3 text-sm">
+            <span class="text-cyan-400">
+              {{ store.totalLinhas }} linhas
+            </span>
+
+            <span class="text-zinc-500">
+              ·
+            </span>
+
+            <span class="text-cyan-400">
+              {{ store.totalColunas }} colunas
+            </span>
+
+            <span class="text-zinc-500">
+              ·
+            </span>
+
+            <span :class="store.totalErros > 0
+              ? 'text-red-400'
+              : 'text-green-400'
+              ">
+              {{ store.totalErros }}
+              {{ store.totalErros === 1 ? 'erro encontrado' : 'erros encontrados' }}
+            </span>
+          </div>
+
+          <!-- LINK/AVISO DO RELATÓRIO -->
+          <p v-if="store.totalErros > 0" class="text-xs text-zinc-500 mt-4">
+            Consulte a página de Relatório para visualizar os detalhes dos erros.
+          </p>
+
+          <p v-else class="text-xs text-green-400/70 mt-4">
+            Nenhum problema foi encontrado na validação da planilha.
           </p>
         </div>
       </section>
+
       <!-- PRÉVIA DOS DADOS -->
-      <section v-if="store.dadosTratados.length" class="w-full max-w-6xl flex flex-col gap-4">
+      <section v-if="store.dadosTratados.length > 0" class="w-full max-w-6xl flex flex-col gap-4">
         <div>
-          <h2 class="text-xl md:text-2xl font-semibold">
+          <h2 class="text-lg font-semibold text-white">
             Prévia dos dados
           </h2>
 
-          <p class="text-sm text-zinc-400 mt-1">
-            Visualização das primeiras {{ Math.min(store.dadosTratados.length, 10) }}
-            linhas do arquivo.
+          <p class="text-sm text-zinc-500 mt-1">
+            Exibindo os primeiros 10 registros processados da planilha.
           </p>
         </div>
 
-        <!-- TABELA -->
         <div class="w-full overflow-x-auto rounded-xl border border-zinc-700">
           <table class="w-full min-w-max text-sm">
+
             <!-- CABEÇALHO -->
             <thead class="bg-zinc-800">
               <tr>
@@ -129,6 +160,7 @@
                 </td>
               </tr>
             </tbody>
+
           </table>
         </div>
 
@@ -141,7 +173,20 @@
           <span>
             {{ store.totalColunas }} colunas
           </span>
+
+          <span>
+            {{ store.totalErros }}
+            {{ store.totalErros === 1 ? 'erro' : 'erros' }}
+          </span>
         </div>
+      </section>
+
+      <!-- SEM DADOS -->
+      <section v-else-if="store.arquivo && !store.processando"
+        class="w-full max-w-6xl rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 text-center">
+        <p class="text-sm text-zinc-500">
+          Nenhum dado foi processado para exibição.
+        </p>
       </section>
     </main>
 
