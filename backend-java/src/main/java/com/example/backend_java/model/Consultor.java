@@ -13,15 +13,21 @@ public class Consultor {
     @Column(nullable = false, length = 150)
     private String nome;
 
-    @Column(nullable = false, length = 150)
+    @Column(nullable = false, length = 150, unique = true)
     private String email;
 
-    @Column(nullable = false, length = 50)
-    private String segmento;
+    @Column(nullable = false, length = 15)
+    private String telefone;
+
+    @Column(nullable = false, length = 255)
+    private Long senhaHash;
 
     @OneToMany (mappedBy = "consultor")
     private List<Cliente> clientes;
     
+    @OneToMany (mappedBy = "consultor")
+    private List<Telemetria> telemetrias;
+
     public Consultor(){ 
     }
 
@@ -45,12 +51,20 @@ public class Consultor {
         this.email = email;
     }
 
-    public String getSegmento(){
-        return segmento;
+    public String getTelefone(){
+        return telefone;
     }
 
-    public void setSegmento(String segmento){
-        this.segmento = segmento;
+    public void setTelefone(String telefone){
+        this.telefone = telefone;
+    }
+
+    public Long getSenhaHash(){
+        return senhaHash;
+    }
+
+    public void setSenhaHash(Long senhaHash){
+        this.senhaHash = senhaHash;
     }
 
     public List<Cliente> getClientes(){
@@ -59,5 +73,13 @@ public class Consultor {
 
     public void setClientes(List<Cliente> clientes) {
         this.clientes = clientes;
+    }
+
+    public List<Telemetria> getTelemetrias(){
+      return telemetrias;
+    }
+
+    public void setTelemetrias(List<Telemetria> telemetrias) {
+        this.telemetrias = telemetrias;
     }
 }

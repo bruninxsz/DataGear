@@ -1,5 +1,5 @@
 package com.example.backend_java.dto;
 
-public class UsuarioDTO {
+public class ConsultorDTO {
   
 }

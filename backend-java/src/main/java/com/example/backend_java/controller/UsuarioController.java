@@ -2,38 +2,31 @@ package com.example.backend_java.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.example.backend_java.dto.UsuarioDTO;
-import com.example.backend_java.model.Usuario;
+import com.example.backend_java.dto.ConsultorDTO;
+import com.example.backend_java.model.Consultor;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/usuarios")
+@RequestMapping("/api/consultor")
 public class UsuarioController {
 
     @PostMapping
-    public Usuario criar(@Valid @RequestBody UsuarioDTO dto) {
+    public Consultor criar(@Valid @RequestBody ConsultorDTO dto) {
         return null;
     }
 
     @GetMapping
-    public List<Usuario> listar() {
+    public List<Consultor> listar() {
         return null;
     }
 
     @PutMapping("/{id}")
-    public Usuario atualizar(
+    public Consultor atualizar(
             @PathVariable Long id,
-            @RequestBody UsuarioDTO dto) {
+            @RequestBody ConsultorDTO dto) {
         return null;
     }
 

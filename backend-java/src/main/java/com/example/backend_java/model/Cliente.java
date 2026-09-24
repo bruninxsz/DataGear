@@ -21,12 +21,18 @@ public class Cliente {
     @Column(nullable = false, length = 150)
     private String segmento;
 
+    @Column(nullable = false, length = 150)
+    private double faturamento_anual;
+
     @ManyToOne
     @JoinColumn(name = "consultor_id")
     private Consultor consultor;
 
     @OneToMany(mappedBy = "cliente")
     private List<Contrato> contratos;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Insight> insights;
 
     public Cliente() {
     }
@@ -77,5 +83,13 @@ public class Cliente {
 
     public void setConsultor(Consultor consultor){
         this.consultor = consultor;
+    }
+
+    public List<Insight> getInsights(){
+        return insights;
+    }
+
+    public void setInsight(List<Insight> insights){
+        this.insights = insights;
     }
 }
