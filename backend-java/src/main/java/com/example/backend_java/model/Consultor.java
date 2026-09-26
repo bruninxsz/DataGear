@@ -1,14 +1,21 @@
 package com.example.backend_java.model;
 
-import jakarta.persistence.*;
-import java.util.*;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 @Entity
 @Table(name = "consultores")
 public class Consultor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_consultor;
 
     @Column(nullable = false, length = 150)
     private String nome;
@@ -32,7 +39,7 @@ public class Consultor {
     }
 
     public Long getId(){
-        return id;
+        return id_consultor;
     }
 
     public String getNome(){

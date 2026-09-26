@@ -3,7 +3,14 @@ package com.example.backend_java.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "contratos")
@@ -11,13 +18,13 @@ public class Contrato {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_contrato;
 
     @Column(nullable = false)
-    private LocalDate dataInicio;
+    private LocalDate data_inicio;
     
     @Column(nullable = false)
-    private LocalDate dataFim;
+    private LocalDate data_fim;
 
     @Column(nullable = false)
     private BigDecimal valor;
@@ -34,27 +41,27 @@ public class Contrato {
     }
 
     public Long getId() {
-        return id;
+        return id_contrato;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.id_contrato = id;
     }
 
     public LocalDate getDataInicio() {
-        return dataInicio;
+        return data_inicio;
     }
 
-    public void setDataInicio(LocalDate dataInicio) {
-        this.dataInicio = dataInicio;
+    public void setDataInicio(LocalDate data_inicio) {
+        this.data_inicio = data_inicio;
     }
 
     public LocalDate getDataFim() {
-        return dataFim;
+        return data_fim;
     }
 
-    public void setDataFim(LocalDate dataFim) {
-        this.dataFim = dataFim;
+    public void setDataFim(LocalDate data_fim) {
+        this.data_fim = data_fim;
     }
 
     public BigDecimal getValor() {

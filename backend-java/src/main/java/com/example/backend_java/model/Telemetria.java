@@ -1,7 +1,15 @@
 package com.example.backend_java.model;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table (name="telemetrias")
@@ -9,49 +17,83 @@ public class Telemetria {
   
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
-  private Long id;
+  private Long id_telemetria;
+
+  @Column (nullable = false, length = 50)
+  private String arquivo_nome; 
 
   @Column (nullable = false)
-  private String evento;
+  private String tipo_evento;
 
   @Column (nullable = false)
-  private LocalDateTime dataHora;
+  private LocalDateTime data_hora;
 
   @Column (nullable = false)
-  private String mensagem;
+  private String mensagem_erro;
+
+  @Column (nullable = false)
+  private Status status_telemetria;
+
+  @ManyToOne
+  @JoinColumn(name = "consultor_id")
+  private Consultor consultor;
 
   public Telemetria(){
   }
 
   public Long getId(){
-    return id;
+    return id_telemetria;
   }
 
-  public void setId(Long id){
-    this.id = id;
+  public void setId(Long id_telemetria){
+    this.id_telemetria = id_telemetria;
   }
 
-  public String getEvento(){
-    return evento;
+  public String getArquivoNome(){
+    return arquivo_nome;
   }
 
-  public void setEvento(String evento){
-    this.evento = evento;
+  public void setArquivoNome(String arquivo_nome){
+    this.arquivo_nome = arquivo_nome;
+  }
+
+  public String getTipoEvento(){
+    return tipo_evento;
+  }
+
+  public void setTipoEvento(String tipo_evento){
+    this.tipo_evento = tipo_evento;
   }
 
   public LocalDateTime getDataHora(){
-    return dataHora;
+    return data_hora;
   }
 
-  public void setDataHora(LocalDateTime dataHora){
-    this.dataHora = dataHora;
+  public void setDataHora(LocalDateTime data_hora){
+    this.data_hora = data_hora;
   }
 
-  public String getMensagem(){
-    return mensagem;
+  public String getMensagemErro(){
+    return mensagem_erro;
   }
 
-  public void setMensagem(String mensagem){
-    this.mensagem = mensagem;
+  public Status getStatusTelemetria(){
+    return status_telemetria;
+  }
+
+  public void setStatusTelemetria(Status status_telemetria){
+    this.status_telemetria = status_telemetria;
+  }
+
+  public void setMensagemErro(String mensagem_erro){
+    this.mensagem_erro = mensagem_erro;
+  }
+
+  public Consultor getConsultor(){
+    return consultor;
+  }
+
+  public void setConsultor(Consultor consultor){
+    this.consultor = consultor;
   }
 }
