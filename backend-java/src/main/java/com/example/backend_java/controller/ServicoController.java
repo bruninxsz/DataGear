@@ -11,29 +11,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.backend_java.dto.ConsultorDTO;
-import com.example.backend_java.model.Consultor;
+import com.example.backend_java.dto.ServicoDTO;
+import com.example.backend_java.model.Servico;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/consultor")
-public class ConsultorController {
+@RequestMapping("/api/servico")
+public class ServicoController {
 
     @PostMapping
-    public Consultor criar(@Valid @RequestBody ConsultorDTO dto) {
+    public Servico criar(@Valid @RequestBody ServicoDTO  dto) {
         return null;
     }
 
     @GetMapping
-    public List<Consultor> listar() {
+    public List<Servico> listar() {
         return null;
     }
 
     @PutMapping("/{id}")
-    public Consultor atualizar(
+    public Servico atualizar(
             @PathVariable Long id,
-            @RequestBody ConsultorDTO dto) {
+            @RequestBody ServicoDTO dto) {
         return null;
     }
 

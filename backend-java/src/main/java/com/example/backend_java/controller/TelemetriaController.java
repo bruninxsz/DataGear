@@ -11,29 +11,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.backend_java.dto.ConsultorDTO;
-import com.example.backend_java.model.Consultor;
+import com.example.backend_java.dto.TelemetriaDTO;
+import com.example.backend_java.model.Telemetria;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/consultor")
-public class ConsultorController {
+@RequestMapping("/api/telemetria")
+public class TelemetriaController {
 
     @PostMapping
-    public Consultor criar(@Valid @RequestBody ConsultorDTO dto) {
+    public Telemetria criar(@Valid @RequestBody TelemetriaDTO  dto) {
         return null;
     }
 
     @GetMapping
-    public List<Consultor> listar() {
+    public List<Telemetria> listar() {
         return null;
     }
 
     @PutMapping("/{id}")
-    public Consultor atualizar(
+    public Telemetria atualizar(
             @PathVariable Long id,
-            @RequestBody ConsultorDTO dto) {
+            @RequestBody TelemetriaDTO dto) {
         return null;
     }
 
@@ -42,3 +42,4 @@ public class ConsultorController {
         // não precisa retornar nada
     }
 }
+    
