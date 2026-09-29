@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import * as XLSX from "xlsx";
+import api from "@/services/api";
 
 export const useUploadStore = defineStore("upload", {
   state: () => ({
@@ -322,6 +323,50 @@ export const useUploadStore = defineStore("upload", {
       });
 
       this.validacaoRealizada = true;
+    },
+
+    async enviarDadosValidos() {
+      if (!this.validacaoRealizada) {
+        this.erro = "Realize a validação antes de enviar os dados.";
+        return;
+      }
+
+      if (this.dadosTratados.length === 0) {
+        this.erro = "Não existem dados para enviar.";
+        return;
+      }
+
+      // Descobre quais linhas possuem erros
+      const linhasComErro = new Set(this.erros.map((erro) => erro.linha));
+
+      // Mantém somente as linhas válidas
+      const dadosValidos = this.dadosTratados.filter(
+        (_, index) => !linhasComErro.has(index + 2),
+      );
+
+      if (dadosValidos.length === 0) {
+        this.erro = "Não existem dados válidos para enviar.";
+        return;
+      }
+
+      this.processando = true;
+      this.erro = "";
+
+      try {
+        const resposta = await api.post("/clientes", dadosValidos);
+
+        console.log("Dados enviados com sucesso:", resposta.data);
+
+        return resposta.data;
+      } catch (error) {
+        console.error("Erro ao enviar dados:", error);
+
+        this.erro =
+          error.response?.data?.message ||
+          "Não foi possível enviar os dados para o backend.";
+      } finally {
+        this.processando = false;
+      }
     },
   },
 });

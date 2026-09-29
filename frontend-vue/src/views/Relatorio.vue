@@ -74,7 +74,7 @@
           class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300"
         >
           <h2
-            class="text-cyan-200 font-semibold text-2xl lg:text-3xl"
+            class="text-green-300 font-semibold text-2xl lg:text-3xl"
           >
             {{ linhasValidas }}
           </h2>
@@ -89,7 +89,7 @@
           class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300"
         >
           <h2
-            class="text-cyan-200 font-semibold text-2xl lg:text-3xl"
+            class="text-red-300 font-semibold text-2xl lg:text-3xl"
           >
             {{ linhasComErro }}
           </h2>
@@ -104,7 +104,7 @@
           class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300"
         >
           <h2
-            class="text-cyan-200 font-semibold text-2xl lg:text-3xl"
+            class="text-red-300 font-semibold text-2xl lg:text-3xl"
           >
             {{ totalErros }}
           </h2>
@@ -176,7 +176,7 @@
               </span>
 
               <span
-                class="text-cyan-200 font-semibold"
+                class="text-red-300 font-semibold"
               >
                 {{ quantidade }}
               </span>
@@ -249,7 +249,7 @@
                     {{ erro.campo }}
                   </td>
 
-                  <td class="px-6 py-4 text-cyan-200">
+                  <td class="px-6 py-4 text-red-300">
                     {{ erro.tipo }}
                   </td>
 

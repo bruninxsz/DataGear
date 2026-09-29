@@ -27,7 +27,7 @@ public class Consultor {
     private String telefone;
 
     @Column(nullable = false, length = 255)
-    private Long senhaHash;
+    private String senhaHash;
 
     @OneToMany (mappedBy = "consultor")
     private List<Cliente> clientes;
@@ -66,11 +66,11 @@ public class Consultor {
         this.telefone = telefone;
     }
 
-    public Long getSenhaHash(){
+    public String getSenhaHash(){
         return senhaHash;
     }
 
-    public void setSenhaHash(Long senhaHash){
+    public void setSenhaHash(String senhaHash){
         this.senhaHash = senhaHash;
     }
 
