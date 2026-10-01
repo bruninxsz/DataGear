@@ -6,12 +6,20 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.backend_java.dto.ClienteDTO;
 import com.example.backend_java.model.Cliente;
+import com.example.backend_java.repository.ClienteRepository;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/cliente")
 public class ClienteController {
+
+    private final ClienteRepository clienteRepository;
+
+    public ClienteController(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
+    }
+
 
     @PostMapping
     public Cliente criar(@Valid @RequestBody ClienteDTO dto) {
@@ -20,14 +28,13 @@ public class ClienteController {
 
     @GetMapping
     public List<Cliente> listar() {
-        return null;
+        return clienteRepository.findAll();
     }
 
     @PutMapping("/{id}")
     public Cliente atualizar(
-            @Valid 
             @PathVariable Long id,
-            @RequestBody ClienteDTO dto) {
+            @Valid @RequestBody ClienteDTO dto) {
         return null;
     }
 

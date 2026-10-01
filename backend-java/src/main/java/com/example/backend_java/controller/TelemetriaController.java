@@ -25,9 +25,8 @@ public class TelemetriaController {
 
     @PutMapping("/{id}")
     public Telemetria atualizar(
-            @Valid 
             @PathVariable Long id,
-            @RequestBody TelemetriaDTO dto) {
+            @Valid @RequestBody TelemetriaDTO dto) {
         return null;
     }
 

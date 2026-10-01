@@ -17,11 +17,6 @@ public class ClienteDTO {
     @Size(max = 150)
     private String nome_empresa;
 
-    @NotBlank(message = "O email é obrigatório")
-    @Email(message = "Informe um email válido")
-    @Size(max = 150)
-    private String email;
-
     @NotBlank(message = "O segmento é obrigatório")
     @Size(max = 150)
     private String segmento;

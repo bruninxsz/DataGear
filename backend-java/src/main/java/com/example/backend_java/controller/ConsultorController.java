@@ -25,9 +25,8 @@ public class ConsultorController {
 
     @PutMapping("/{id}")
     public Consultor atualizar(
-            @Valid 
             @PathVariable Long id,
-            @RequestBody ConsultorDTO dto) {
+            @Valid @RequestBody ConsultorDTO dto) {
         return null;
     }
 

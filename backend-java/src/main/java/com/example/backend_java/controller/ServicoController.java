@@ -25,9 +25,8 @@ public class ServicoController {
 
     @PutMapping("/{id}")
     public Servico atualizar(
-            @Valid 
             @PathVariable Long id,
-            @RequestBody ServicoDTO dto) {
+            @Valid @RequestBody ServicoDTO dto) {
         return null;
     }
 

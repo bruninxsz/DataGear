@@ -25,9 +25,8 @@ public class ContratoController {
 
     @PutMapping("/{id}")
     public Contrato atualizar(
-            @Valid 
             @PathVariable Long id,
-            @RequestBody ContratoDTO dto) {
+            @Valid @RequestBody ContratoDTO dto) {
         return null;
     }
 

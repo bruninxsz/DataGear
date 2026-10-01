@@ -25,9 +25,8 @@ public class InsightController {
 
     @PutMapping("/{id}")
     public Insight atualizar(
-            @Valid 
             @PathVariable Long id,
-            @RequestBody InsightDTO dto) {
+            @Valid @RequestBody InsightDTO dto) {
         return null;
     }
 
