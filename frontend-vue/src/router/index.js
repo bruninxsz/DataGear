@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Cadastro from '../views/Cadastro.vue'
-import Relatorio from '../views/Relatorio.vue'
+import Clientes from '../views/Clientes.vue'
 import Upload from '../views/Upload.vue'
 import Dashboard from '../views/Dashboard.vue'
 
@@ -24,9 +24,9 @@ const routes = [
         component: Cadastro
     },
     {
-        path: '/relatorio',
-        name: 'relatorio',
-        component: Relatorio
+        path: '/clientes',
+        name: 'clientes',
+        component: Clientes
     },
     {
         path: '/upload',

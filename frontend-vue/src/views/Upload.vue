@@ -68,7 +68,7 @@
         </p>
 
         <!-- PROCESSAR -->
-        <button type="button" @click="store.processarArquivo()" :disabled="!store.arquivo || store.processando"
+        <button type="button" @click="store.processarArquivo() && (arquivoProcessado = true)" :disabled="!store.arquivo || store.processando"
           class="w-full md:w-auto cursor-pointer bg-gradient-to-b from-cyan-500 to-sky-200 text-zinc-900 border border-white px-8 py-3 rounded-lg font-medium hover:shadow-md duration-300 shadow-cyan-300 text-sm md:text-lg disabled:opacity-40 disabled:cursor-not-allowed">
           {{ store.processando ? 'Processando...' : 'Processar arquivo' }}
         </button>
@@ -188,6 +188,235 @@
           Nenhum dado foi processado para exibição.
         </p>
       </section>
+
+      <section v-if="arquivoProcessado" class="flex flex-col gap-12 w-xl md:max-w-4xl lg:min-w-7xl">
+      <!-- TOP CARDS -->
+      <section
+        id="topcards"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl"
+      >
+        <!-- Total de registros -->
+        <div
+          class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300"
+        >
+          <h2
+            class="text-cyan-200 font-semibold text-2xl lg:text-3xl"
+          >
+            {{ totalLinhas }}
+          </h2>
+
+          <p class="text-gray-400 text-sm">
+            Total de registros
+          </p>
+        </div>
+
+        <!-- Registros válidos -->
+        <div
+          class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300"
+        >
+          <h2
+            class="text-green-300 font-semibold text-2xl lg:text-3xl"
+          >
+            {{ linhasValidas }}
+          </h2>
+
+          <p class="text-gray-400 text-sm">
+            Registros válidos
+          </p>
+        </div>
+
+        <!-- Registros com erro -->
+        <div
+          class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300"
+        >
+          <h2
+            class="text-red-300 font-semibold text-2xl lg:text-3xl"
+          >
+            {{ linhasComErro }}
+          </h2>
+
+          <p class="text-gray-400 text-sm">
+            Registros com erro
+          </p>
+        </div>
+
+        <!-- Total de erros -->
+        <div
+          class="flex flex-col gap-3 rounded-xl px-6 py-8 border border-zinc-800 shadow-cyan-500/20 shadow-sm hover:shadow-md duration-300"
+        >
+          <h2
+            class="text-red-300 font-semibold text-2xl lg:text-3xl"
+          >
+            {{ totalErros }}
+          </h2>
+
+          <p class="text-gray-400 text-sm">
+            Erros encontrados
+          </p>
+        </div>
+      </section>
+
+      <!-- RESUMO DOS ERROS -->
+      <section
+        id="resumo"
+        class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-7xl"
+      >
+        <!-- Quantidade de colunas -->
+        <div
+          class="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6"
+        >
+          <p class="text-sm text-zinc-400 mb-2">
+            Colunas analisadas
+          </p>
+
+          <h2 class="text-2xl font-semibold text-white">
+            {{ totalColunas }}
+          </h2>
+        </div>
+
+        <!-- Tipos de erro -->
+        <div
+          class="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6"
+        >
+          <p class="text-sm text-zinc-400 mb-2">
+            Tipos de problemas encontrados
+          </p>
+
+          <h2 class="text-2xl font-semibold text-cyan-200">
+            {{ Object.keys(errosPorTipo).length }}
+          </h2>
+        </div>
+      </section>
+
+      <!-- VALIDAÇÕES REALIZADAS -->
+      <section class="w-full max-w-7xl">
+        <div
+          class="rounded-xl border border-zinc-800 overflow-hidden"
+        >
+          <div class="p-6 border-b border-zinc-800">
+            <h2 class="text-xl md:text-2xl font-semibold">
+              Validações realizadas
+            </h2>
+
+            <p class="text-sm text-zinc-400 mt-1">
+              Quantidade de problemas encontrados por tipo.
+            </p>
+          </div>
+
+          <div
+            v-if="Object.keys(errosPorTipo).length"
+            class="p-6 space-y-4"
+          >
+            <div
+              v-for="(quantidade, tipo) in errosPorTipo"
+              :key="tipo"
+              class="flex items-center justify-between border-b border-zinc-800 pb-3"
+            >
+              <span class="text-zinc-300">
+                {{ tipo }}
+              </span>
+
+              <span
+                class="text-red-300 font-semibold"
+              >
+                {{ quantidade }}
+              </span>
+            </div>
+          </div>
+
+          <div
+            v-else
+            class="p-6"
+          >
+            <p class="text-zinc-500">
+              Nenhum erro encontrado.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- DETALHAMENTO DOS ERROS -->
+      <section class="w-full max-w-7xl">
+        <div
+          class="rounded-xl border border-zinc-800 overflow-hidden"
+        >
+          <div class="p-6 border-b border-zinc-800">
+            <h2 class="text-xl md:text-2xl font-semibold">
+              Detalhamento dos erros
+            </h2>
+
+            <p class="text-sm text-zinc-400 mt-1">
+              Problemas encontrados durante a validação da planilha.
+            </p>
+          </div>
+
+          <!-- TABELA -->
+          <div
+            v-if="erros.length"
+            class="overflow-x-auto"
+          >
+            <table class="w-full text-sm">
+              <thead class="bg-zinc-800">
+                <tr>
+                  <th class="px-6 py-4 text-left text-zinc-400">
+                    Linha
+                  </th>
+
+                  <th class="px-6 py-4 text-left text-zinc-400">
+                    Campo
+                  </th>
+
+                  <th class="px-6 py-4 text-left text-zinc-400">
+                    Tipo
+                  </th>
+
+                  <th class="px-6 py-4 text-left text-zinc-400">
+                    Descrição
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr
+                  v-for="(erro, index) in erros"
+                  :key="index"
+                  class="border-t border-zinc-800 hover:bg-zinc-800/50 duration-200"
+                >
+                  <td class="px-6 py-4 text-zinc-400">
+                    {{ erro.linha }}
+                  </td>
+
+                  <td class="px-6 py-4 text-white">
+                    {{ erro.campo }}
+                  </td>
+
+                  <td class="px-6 py-4 text-red-300">
+                    {{ erro.tipo }}
+                  </td>
+
+                  <td class="px-6 py-4 text-zinc-400">
+                    {{ erro.descricao }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- SEM ERROS -->
+          <div
+            v-else
+            class="p-6"
+          >
+            <p
+              v-if="validacaoRealizada"
+              class="text-zinc-400"
+            >
+              Nenhum erro foi encontrado na planilha.
+            </p>
+          </div>
+        </div>
+      </section>
+      </section>
     </main>
 
     <footer>
@@ -197,10 +426,27 @@
 </template>
 
 <script setup>
-import { useUploadStore } from '../stores/uploadStore.js'
+import { storeToRefs } from 'pinia'
 
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
+
+import { useUploadStore } from '../stores/uploadStore'
+
+let arquivoProcessado = false;
+
+const uploadStore = useUploadStore()
+
+const {
+  totalLinhas,
+  totalColunas,
+  totalErros,
+  linhasComErro,
+  linhasValidas,
+  errosPorTipo,
+  erros,
+  validacaoRealizada
+} = storeToRefs(uploadStore)
 
 const store = useUploadStore()
 
