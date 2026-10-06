@@ -3,6 +3,7 @@
         import java.util.List;
 
         import jakarta.persistence.*;
+import tools.jackson.databind.annotation.EnumNaming;
         @Entity
         @Table(name = "cliente")
         public class Cliente {
@@ -18,15 +19,17 @@
             private String segmento;
 
             @Column(nullable = false, length = 150)
-            private double faturamento_anual;
+            private double faturamento_anual;   
 
+            @Enumerated(EnumType.STRING)
             @Column(nullable = false, length = 1)
             private nivelCliente nivel;
 
+            @Enumerated(EnumType.STRING)
             @Column(nullable = false)
             private Status status;
 
-            @ManyToOne
+            @ManyToOne  
             @JoinColumn(name = "consultor_id")
             private Consultor consultor;
 

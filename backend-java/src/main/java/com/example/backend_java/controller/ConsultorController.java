@@ -6,12 +6,19 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.backend_java.dto.ConsultorDTO;
 import com.example.backend_java.model.Consultor;
+import com.example.backend_java.repository.ConsultorRepository;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/consultor")
 public class ConsultorController {
+
+    private final ConsultorRepository consultorRepository;
+
+    public ConsultorController(ConsultorRepository consultorRepository){
+        this.consultorRepository = consultorRepository;
+    }
 
     @PostMapping
     public Consultor criar(@Valid @RequestBody ConsultorDTO dto) {
@@ -20,7 +27,7 @@ public class ConsultorController {
 
     @GetMapping
     public List<Consultor> listar() {
-        return null;
+        return consultorRepository.findAll();
     }
 
     @PutMapping("/{id}")

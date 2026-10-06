@@ -16,6 +16,4 @@ public class ConsultorDTO {
     private String email;
 
     private String telefone;
-
-    private String senha;
 }

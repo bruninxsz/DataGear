@@ -4,7 +4,7 @@ import java.util.List;
 
 import jakarta.persistence.*;
 @Entity
-@Table(name = "consultores")
+@Table(name = "consultor")
 public class Consultor {
 
     @Id
@@ -19,9 +19,6 @@ public class Consultor {
 
     @Column(nullable = false, length = 15)
     private String telefone;
-
-    @Column(nullable = false, length = 255)
-    private String senhaHash;
 
     @OneToMany (mappedBy = "consultor")
     private List<Cliente> clientes;
@@ -58,14 +55,6 @@ public class Consultor {
 
     public void setTelefone(String telefone){
         this.telefone = telefone;
-    }
-
-    public String getSenhaHash(){
-        return senhaHash;
-    }
-
-    public void setSenhaHash(String senhaHash){
-        this.senhaHash = senhaHash;
     }
 
     public List<Cliente> getClientes(){
