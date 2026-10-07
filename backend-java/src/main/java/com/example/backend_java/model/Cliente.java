@@ -24,7 +24,7 @@ import tools.jackson.databind.annotation.EnumNaming;
             @Enumerated(EnumType.STRING)
             @Column(nullable = false, length = 1)
             private nivelCliente nivel;
-
+e
             @Enumerated(EnumType.STRING)
             @Column(nullable = false)
             private Status status;
