@@ -31,7 +31,7 @@ public class Telemetria {
   @JoinColumn(name = "consultor_id")
   private Consultor consultor;
 
-  public Telemetria(){
+  public Telemetria(){  
   }
 
   public Long getId(){

@@ -15,4 +15,7 @@ public class ServicoDTO {
     @NotBlank(message = "A categoria é obrigatória")
     @Size(max = 40, message = "A categoria deve ter no máximo 40 caracteres")
     private String categoria;
+
+    @Size(max = 150, message ="A descrição deveter no máximo 150 caracteres")
+    private String descricao;
 }

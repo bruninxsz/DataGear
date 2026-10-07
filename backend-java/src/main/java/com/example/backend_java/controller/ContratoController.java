@@ -6,12 +6,19 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.backend_java.dto.ContratoDTO;
 import com.example.backend_java.model.Contrato;
+import com.example.backend_java.repository.ContratoRepository;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/contrato")
 public class ContratoController {
+
+    private final ContratoRepository contratoRepository;
+
+    public ContratoController(ContratoRepository contratoRepository){
+        this.contratoRepository = contratoRepository;
+    }
 
     @PostMapping
     public Contrato criar(@Valid @RequestBody ContratoDTO dto) {
@@ -20,7 +27,7 @@ public class ContratoController {
 
     @GetMapping
     public List<Contrato> listar() {
-        return null;
+        return contratoRepository.findAll();
     }
 
     @PutMapping("/{id}")

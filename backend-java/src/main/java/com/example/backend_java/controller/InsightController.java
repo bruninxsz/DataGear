@@ -6,12 +6,19 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.backend_java.dto.InsightDTO;
 import com.example.backend_java.model.Insight;
+import com.example.backend_java.repository.InsightRepository;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/insight")
 public class InsightController {
+
+    private final InsightRepository insightRepository;
+
+    public InsightController(InsightRepository insightRepository){
+        this.insightRepository = insightRepository;
+    }
 
     @PostMapping
     public Insight criar(@Valid @RequestBody InsightDTO  dto) {
@@ -20,7 +27,7 @@ public class InsightController {
 
     @GetMapping
     public List<Insight> listar() {
-        return null;
+        return insightRepository.findAll();
     }
 
     @PutMapping("/{id}")

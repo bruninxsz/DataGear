@@ -18,6 +18,9 @@ public class Servico {
   @Column(nullable = false, length = 40)
   private String categoria;
 
+  @Column(length = 150)
+  private String descricao;
+
   @OneToMany (mappedBy = "servico")
   private List<Contrato> contratos;
 
@@ -46,6 +49,14 @@ public class Servico {
 
   public void setCategoria(String categoria){
     this.categoria = categoria;
+  }
+
+  public String getDescricao(){
+    return descricao;
+  }
+
+  public void setDescricao(String descricao){
+    this.descricao = descricao;
   }
 
   public List<Contrato> getContratos(){

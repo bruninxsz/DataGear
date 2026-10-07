@@ -22,6 +22,11 @@ public class Contrato {
     @Column(nullable = false)
     private BigDecimal valor;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status;
+
+
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
@@ -63,6 +68,14 @@ public class Contrato {
 
     public void setValor(BigDecimal valor) {
         this.valor = valor;
+    }
+
+    public Status getStatus(){
+        return status;
+    }
+
+    public void setStatus(Status status){
+        this.status = status;
     }
 
     public Cliente getCliente() {

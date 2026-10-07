@@ -6,12 +6,19 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.backend_java.dto.ServicoDTO;
 import com.example.backend_java.model.Servico;
+import com.example.backend_java.repository.ServicoRepository;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/servico")
 public class ServicoController {
+
+    private final ServicoRepository servicoRepository;
+
+    public ServicoController(ServicoRepository servicoRepository){
+        this.servicoRepository = servicoRepository;
+    }
 
     @PostMapping
     public Servico criar(@Valid @RequestBody ServicoDTO  dto) {
@@ -20,7 +27,7 @@ public class ServicoController {
 
     @GetMapping
     public List<Servico> listar() {
-        return null;
+        return servicoRepository.findAll();
     }
 
     @PutMapping("/{id}")
