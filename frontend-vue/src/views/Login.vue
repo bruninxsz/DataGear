@@ -1,12 +1,19 @@
 <template>
   <main class="grid grid-cols-1 bg-gradient-to-b from-zinc-950 to-cyan-900 h-screen">
-   <form @submit.prevent="formSubmit" class="flex flex-col items-center gap-8 m-auto bg-zinc-900 shadow-md shadow-cyan-300 p-4 min-w-sm md:min-w-xl lg:min-w-2xl text-cyan-100 rounded-4xl">
+    <form @submit.prevent="formSubmit"
+      class="flex flex-col items-center gap-8 m-auto bg-zinc-900 shadow-md shadow-cyan-300 p-4 min-w-sm md:min-w-xl lg:min-w-2xl text-cyan-100 rounded-4xl">
       <h2 class="text-cyan-200 text-2xl mt-8 mb-4 font-bold">Faça seu Login</h2>
-      <input type="email" v-model="email" class="border border-cyan-200 rounded-lg w-70 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base" placeholder="Digite o seu e-mail:">
-      <input type="password" v-model="password" class="border border-cyan-200 rounded-lg w-70 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base" placeholder="Digite a sua senha:">
-      <button type="submit" class="cursor-pointer bg-gradient-to-b from-cyan-500 to-sky-200 text-zinc-900 opacity-80 border border-white py-2 rounded-lg font-medium hover:shadow-md duration-300 shadow-cyan-300 duration-400 mt-4 min-w-40"> Enviar </button>
+      <input type="email" v-model="email"
+        class="border border-cyan-200 rounded-lg w-70 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base"
+        placeholder="Digite o seu e-mail:">
+      <input type="password" v-model="password"
+        class="border border-cyan-200 rounded-lg w-70 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base"
+        placeholder="Digite a sua senha:">
+      <button type="submit"
+        class="cursor-pointer bg-gradient-to-b from-cyan-500 to-sky-200 text-zinc-900 opacity-80 border border-white py-2 rounded-lg font-medium hover:shadow-md duration-300 shadow-cyan-300 duration-400 mt-4 min-w-40">
+        Enviar </button>
       <router-link to="cadastro" class="mb-8 hover:scale-[1.03] duration-200">Não possui conta?</router-link>
-   </form>
+    </form>
   </main>
 </template>
 
@@ -18,23 +25,30 @@ import { useRouter } from 'vue-router';
 const email = ref('');
 const senha = ref('');
 const router = useRouter();
-async function formSubmit(){
-  
+async function formSubmit() {
 
-  try{
-  const response = await axios.post('http://localhost:8080/api/auth/login', {
-    email: email.value,
-    senha: senha.value
-  })
 
-  console.log(response.data);
-  
-} catch (error) {
-  console.error('Erro ao fazer login:', error);
-  alert('Erro ao fazer login. Por favor, tente novamente.');
-}
+  try {
+    const response = await axios.post('http://localhost:8080/api/auth/login', {
+      email: email.value,
+      senha: senha.value
+    })
 
-router.push('/upload');
+    console.log(response.data);
+    router.push('/upload');
+
+  } catch (error) {
+    
+    console.error('Erro ao fazer login:', error);
+
+    if (error.response?.status === 401) {
+      alert('E-mail ou senha inválidos');
+    } else {
+      alert('Erro ao conectar com o servidor.');
+    }
+  }
+
+
 }
 
 </script>
