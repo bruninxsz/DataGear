@@ -20,6 +20,9 @@ public class Consultor {
     @Column(nullable = false, length = 15)
     private String telefone;
 
+    @Column(nullable=false, length = 255)
+    private String senha;
+
     @OneToMany (mappedBy = "consultor")
     private List<Cliente> clientes;
     
@@ -55,6 +58,14 @@ public class Consultor {
 
     public void setTelefone(String telefone){
         this.telefone = telefone;
+    }
+
+    public String getSenha(){
+        return senha;
+    }
+
+    public void setSenha(String senha){
+        this.senha = senha;
     }
 
     public List<Cliente> getClientes(){
