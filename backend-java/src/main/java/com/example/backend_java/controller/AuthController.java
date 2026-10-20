@@ -12,6 +12,7 @@ import com.example.backend_java.repository.ConsultorRepository;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final ConsultorRepository consultorRepository;

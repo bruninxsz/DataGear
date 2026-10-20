@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/consultor")
+@CrossOrigin(origins = "*")
 public class ConsultorController {
 
     private final ConsultorRepository consultorRepository;
@@ -37,6 +38,7 @@ public class ConsultorController {
         );
 
         return consultorRepository.save(consultor);
+        
     }
 
     @GetMapping

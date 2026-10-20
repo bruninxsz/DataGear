@@ -1,117 +1,165 @@
-        package com.example.backend_java.model;
 
-        import java.util.List;
+package com.example.backend_java.model;
 
-        import jakarta.persistence.*;
-import tools.jackson.databind.annotation.EnumNaming;
-        @Entity
-        @Table(name = "cliente")
-        public class Cliente {
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
-            @Id
-            @GeneratedValue(strategy = GenerationType.IDENTITY)
-            private Long id_cliente;
+import jakarta.persistence.*;
 
-            @Column(nullable = false, length = 150)
-            private String nome_empresa;
+@Entity
+@Table(name = "cliente")
+public class Cliente {
 
-            @Column(nullable = false, length = 150)
-            private String segmento;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_cliente")
+    private Long id_cliente;
 
-            @Column(nullable = false, length = 150)
-            private double faturamento_anual;   
+    @Column(name = "codigo_cliente", nullable = false,
+            unique = true, length = 20)
+    private String codigo_cliente;
 
-            @Enumerated(EnumType.STRING)
-            @Column(nullable = false, length = 1)
-            private nivelCliente nivel;
+    @Column(name = "nome_cliente", nullable = false, length = 150)
+    private String nome_cliente;
 
-            @Enumerated(EnumType.STRING)
-            @Column(nullable = false)
-            private Status status;
+    @Column(name = "consultor", nullable = false, length = 150)
+    private String consultor;
 
-            @ManyToOne  
-            @JoinColumn(name = "consultor_id")
-            private Consultor consultor;
+    @Column(name = "segmento", nullable = false, length = 150)
+    private String segmento;
 
-            @OneToMany(mappedBy = "cliente")
-            private List<Contrato> contratos;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "nivel_cliente", nullable = false, length = 1)
+    private nivelCliente nivel_cliente;
 
-            @OneToMany(mappedBy = "cliente")
-            private List<Insight> insights;
+    @Column(name = "faturamento_anual", nullable = false,
+            precision = 15, scale = 2)
+    private BigDecimal faturamento_anual;
 
-            public Cliente() {
-            }
+    @Column(name = "servicos_contratados", nullable = false,
+            columnDefinition = "TEXT")
+    private String servicos_contratados;
 
-            public Long getId() {
-                return id_cliente;
-            }
+    @Column(name = "data_contratacao", nullable = false)
+    private LocalDate data_contratacao;
 
-            public void setId(Long id_cliente) {
-                this.id_cliente = id_cliente;
-            }
+    @Column(name = "cidade", length = 100)
+    private String cidade;
 
-            public String getNomeEmpresa() {
-                return nome_empresa;
-            }
+    @Column(name = "uf", length = 2)
+    private String uf;
 
-            public void setNomeEmpresa(String nome_empresa) {
-                this.nome_empresa = nome_empresa;
-            }
+    @OneToMany(mappedBy = "cliente")
+    private List<Contrato> contratos;
 
-            public String getSegmento() {
-                return segmento;
-            }
+    @OneToMany(mappedBy = "cliente")
+    private List<Insight> insights;
 
-            public void setSegmento(String segmento) {
-                this.segmento = segmento;
-            }
+    public Cliente() {
+    }
 
-            public Status getStatusCliente() {
-                return status;
-            }
+    public Long getId_cliente() {
+        return id_cliente;
+    }
 
-            public void setStatusCliente(Status status) {
-                this.status = status;
-            }
+    public void setId_cliente(Long id_cliente) {
+        this.id_cliente = id_cliente;
+    }
 
-            public List<Contrato> getContratos() {
-                return contratos;
-            }
+    public String getCodigo_cliente() {
+        return codigo_cliente;
+    }
 
-            public void setContratos(List<Contrato> contratos) {
-                this.contratos = contratos;
-            }
+    public void setCodigo_cliente(String codigo_cliente) {
+        this.codigo_cliente = codigo_cliente;
+    }
 
-            public Consultor getConsultor(){
-                return consultor;
-            }
+    public String getNome_cliente() {
+        return nome_cliente;
+    }
 
-            public void setConsultor(Consultor consultor){
-                this.consultor = consultor;
-            }
+    public void setNome_cliente(String nome_cliente) {
+        this.nome_cliente = nome_cliente;
+    }
 
-            public List<Insight> getInsights(){
-                return insights;
-            }
+    public String getConsultor() {
+        return consultor;
+    }
 
-            public void setInsight(List<Insight> insights){
-                this.insights = insights;
-            }
+    public void setConsultor(String consultor) {
+        this.consultor = consultor;
+    }
 
-            public double getFaturamentoAnual() {
-                return faturamento_anual;
-            }
+    public String getSegmento() {
+        return segmento;
+    }
 
-            public void setFaturamentoAnual(double faturamento_anual) {
-                this.faturamento_anual = faturamento_anual;
-            }
+    public void setSegmento(String segmento) {
+        this.segmento = segmento;
+    }
 
-            public nivelCliente getNivelCliente() {
-                return nivel;
-            }
+    public nivelCliente getNivel_cliente() {
+        return nivel_cliente;
+    }
 
-            public void setNivelCliente(nivelCliente nivel) {
-                this.nivel = nivel;
-            }
+    public void setNivel_cliente(nivelCliente nivel_cliente) {
+        this.nivel_cliente = nivel_cliente;
+    }
 
-        }
+    public BigDecimal getFaturamento_anual() {
+        return faturamento_anual;
+    }
+
+    public void setFaturamento_anual(BigDecimal faturamento_anual) {
+        this.faturamento_anual = faturamento_anual;
+    }
+
+    public String getServicos_contratados() {
+        return servicos_contratados;
+    }
+
+    public void setServicos_contratados(String servicos_contratados) {
+        this.servicos_contratados = servicos_contratados;
+    }
+
+    public LocalDate getData_contratacao() {
+        return data_contratacao;
+    }
+
+    public void setData_contratacao(LocalDate data_contratacao) {
+        this.data_contratacao = data_contratacao;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+
+    public List<Contrato> getContratos() {
+        return contratos;
+    }
+
+    public void setContratos(List<Contrato> contratos) {
+        this.contratos = contratos;
+    }
+
+    public List<Insight> getInsights() {
+        return insights;
+    }
+
+    public void setInsights(List<Insight> insights) {
+        this.insights = insights;
+    }
+}

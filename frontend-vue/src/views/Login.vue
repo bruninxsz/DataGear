@@ -6,7 +6,7 @@
       <input type="email" v-model="email"
         class="border border-cyan-200 rounded-lg w-70 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base"
         placeholder="Digite o seu e-mail:">
-      <input type="password" v-model="password"
+      <input type="password" v-model="senha"
         class="border border-cyan-200 rounded-lg w-70 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base"
         placeholder="Digite a sua senha:">
       <button type="submit"
@@ -33,6 +33,9 @@ async function formSubmit() {
       email: email.value,
       senha: senha.value
     })
+
+    // Salva os dados de autenticação no navegador
+    localStorage.setItem('usuario', JSON.stringify(response.data))
 
     console.log(response.data);
     router.push('/upload');

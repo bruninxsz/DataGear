@@ -336,16 +336,12 @@ export const useUploadStore = defineStore("upload", {
         return;
       }
 
-      // Descobre quais linhas possuem erros
-      const linhasComErro = new Set(this.erros.map((erro) => erro.linha));
+      // A planilha inteira deve ser rejeitada se houver erros
+      if (this.erros.length > 0) {
+        this.erro =
+          `Importação cancelada: ${this.erros.length} erro(s) ` +
+          `encontrado(s) em ${this.linhasComErro} linha(s).`;
 
-      // Mantém somente as linhas válidas
-      const dadosValidos = this.dadosTratados.filter(
-        (_, index) => !linhasComErro.has(index + 2),
-      );
-
-      if (dadosValidos.length === 0) {
-        this.erro = "Não existem dados válidos para enviar.";
         return;
       }
 
@@ -353,17 +349,24 @@ export const useUploadStore = defineStore("upload", {
       this.erro = "";
 
       try {
-        const resposta = await api.post("/clientes", dadosValidos);
+        const clientes = this.dadosTratados.map((linha) => ({
+          nome_empresa: linha.nome_cliente,
+          segmento: linha.segmento,
+          faturamento_anual: Number(linha.faturamento_anual),
+          nivel_cliente: String(linha.nivel_cliente).toUpperCase(),
+        }));
 
-        console.log("Dados enviados com sucesso:", resposta.data);
+        const resposta = await api.post("/cliente/importar", clientes);
+
+        console.log("Importação concluída:", resposta.data);
 
         return resposta.data;
       } catch (error) {
-        console.error("Erro ao enviar dados:", error);
+        console.error("Erro ao importar clientes:", error);
 
         this.erro =
           error.response?.data?.message ||
-          "Não foi possível enviar os dados para o backend.";
+          "Não foi possível importar os clientes.";
       } finally {
         this.processando = false;
       }
