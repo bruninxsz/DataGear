@@ -336,12 +336,8 @@ export const useUploadStore = defineStore("upload", {
         return;
       }
 
-      // A planilha inteira deve ser rejeitada se houver erros
       if (this.erros.length > 0) {
-        this.erro =
-          `Importação cancelada: ${this.erros.length} erro(s) ` +
-          `encontrado(s) em ${this.linhasComErro} linha(s).`;
-
+        this.erro = `Importação cancelada: ${this.erros.length} erro(s) encontrado(s).`;
         return;
       }
 
@@ -349,17 +345,30 @@ export const useUploadStore = defineStore("upload", {
       this.erro = "";
 
       try {
+        // Mapeia todos os campos exatamente como o ClienteDTO Java exige
         const clientes = this.dadosTratados.map((linha) => ({
-          nome_empresa: linha.nome_cliente,
-          segmento: linha.segmento,
+          codigo_cliente: String(linha.codigo_cliente || "").trim(),
+          nome_cliente: String(linha.nome_cliente || "").trim(),
+          consultor: String(linha.consultor || "").trim(),
+          segmento: String(linha.segmento || "").trim(),
+          nivel_cliente: String(linha.nivel_cliente || "").toUpperCase(),
           faturamento_anual: Number(linha.faturamento_anual),
-          nivel_cliente: String(linha.nivel_cliente).toUpperCase(),
+          servicos_contratados: String(linha.servicos_contratados || "").trim(),
+          // Garante que a data seja formatada como YYYY-MM-DD (ISO string) para o LocalDate do Spring
+          data_contratacao: linha.data_contratacao
+            ? new Date(linha.data_contratacao).toISOString().split("T")[0]
+            : null,
+          cidade: linha.cidade ? String(linha.cidade).trim() : null,
+          uf: linha.uf ? String(linha.uf).trim().toUpperCase() : null,
         }));
 
-        const resposta = await api.post("/cliente/importar", clientes);
+        const resposta = await api.post("/api/cliente/importar", clientes, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         console.log("Importação concluída:", resposta.data);
-
         return resposta.data;
       } catch (error) {
         console.error("Erro ao importar clientes:", error);
@@ -367,6 +376,8 @@ export const useUploadStore = defineStore("upload", {
         this.erro =
           error.response?.data?.message ||
           "Não foi possível importar os clientes.";
+
+        throw error;
       } finally {
         this.processando = false;
       }

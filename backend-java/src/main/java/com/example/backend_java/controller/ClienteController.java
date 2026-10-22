@@ -6,16 +6,19 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.backend_java.dto.ClienteDTO;
 import com.example.backend_java.model.Cliente;
 import com.example.backend_java.repository.ClienteRepository;
 import com.example.backend_java.service.ClienteService;
+import com.example.backend_java.model.Status;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/cliente")
+@CrossOrigin(origins = "*")
 public class ClienteController {
 
     private final ClienteRepository clienteRepository;
@@ -26,7 +29,6 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
-
     @PostMapping("/importar")
     public ResponseEntity<?> importar(
             @RequestBody List<@Valid ClienteDTO> dtos) {
@@ -34,22 +36,36 @@ public class ClienteController {
             List<Cliente> clientes = clienteService.importar(dtos);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(
-                Map.of(
-                    "message", "Importação realizada com sucesso.",
-                    "totalImportado", clientes.size()
-                )
+                    Map.of(
+                            "message", "Importação realizada com sucesso.",
+                            "totalImportado", clientes.size()
+                    )
             );
 
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(
-                Map.of("message", e.getMessage())
+                    Map.of("message", e.getMessage())
             );
         }
     }
 
-    @GetMapping
+    @GetMapping("listar")
     public List<Cliente> listar() {
         return clienteRepository.findAll();
+    }
+
+    @PatchMapping("/{id}/encerrar")
+    public ResponseEntity<Cliente> encerrarCliente(@PathVariable Long id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Cliente não encontrado"
+                ));
+
+        cliente.setStatus(Status.ENCERRADO);
+
+        Cliente clienteAtualizado = clienteRepository.save(cliente);
+
+        return ResponseEntity.ok(clienteAtualizado);
     }
 
     @PutMapping("/{id}")
@@ -59,8 +75,9 @@ public class ClienteController {
         return null;
     }
 
-    @DeleteMapping("/{id}")
-    public void remover(@PathVariable Long id) {
-        // não precisa retornar nada
+    @DeleteMapping("/deletar")
+    public ResponseEntity<Void> removerTodos() {
+        clienteRepository.deleteAll();
+        return ResponseEntity.noContent().build();
     }
 }

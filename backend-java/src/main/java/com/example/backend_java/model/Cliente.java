@@ -33,6 +33,10 @@ public class Cliente {
     @Column(name = "nivel_cliente", nullable = false, length = 1)
     private nivelCliente nivel_cliente;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 10)
+    private Status status;
+
     @Column(name = "faturamento_anual", nullable = false,
             precision = 15, scale = 2)
     private BigDecimal faturamento_anual;
@@ -105,6 +109,14 @@ public class Cliente {
 
     public void setNivel_cliente(nivelCliente nivel_cliente) {
         this.nivel_cliente = nivel_cliente;
+    }
+
+    public Status getStatus(){
+        return status;
+    }
+
+    public void setStatus(Status status){
+        this.status = status;
     }
 
     public BigDecimal getFaturamento_anual() {

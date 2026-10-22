@@ -44,7 +44,7 @@
 
         <!-- ERRO DE ARQUIVO -->
         <p v-if="erro" class="text-red-400 text-sm text-center">
-          {{ erro }}
+          Não foi possível enviar os dados.
         </p>
 
         <!-- PROCESSAR -->
@@ -75,7 +75,7 @@
             Dados não enviados ao banco.<br>
             Consulte os detalhes abaixo para visualizar a lista completa de erros.
           </p>
-          <p v-else class="text-xs text-green-400/70 mt-4">
+          <p v-if="totalErros === 0 && sucessoImportacao" class="text-xs text-green-400/70 mt-4">
             Dados enviados ao banco.
             Nenhum problema foi encontrado na validação da planilha.
           </p>
@@ -219,6 +219,8 @@ import { useUploadStore } from '../stores/uploadStore'
 
 const uploadStore = useUploadStore()
 
+const sucessoImportacao = ref(false)
+
 // Desestrutura todas as propriedades reativas do Pinia
 const {
   arquivo,
@@ -246,6 +248,7 @@ function escolherArquivo(event) {
 }
 
 async function processarEImportar() {
+  sucessoImportacao.value = false
   try {
     // 1. Executa a leitura e validação
     await uploadStore.processarArquivo()
@@ -257,16 +260,19 @@ async function processarEImportar() {
 
     // 3. Se a planilha estiver 100% limpa, importa no banco de dados
     importando.value = true
-    await uploadStore.importarNoBanco()
+    await uploadStore.enviarDadosValidos()
 
+    sucessoImportacao.value = true
   } catch (erroOcorrido) {
     console.error('Erro ao processar/importar:', erroOcorrido)
     uploadStore.erro =
       erroOcorrido.response?.data?.message ||
       erroOcorrido.message ||
       'Ocorreu um erro ao processar a planilha.'
+    
   } finally {
     importando.value = false
+    sucessoImportacao.value = false
   }
 }
 </script>

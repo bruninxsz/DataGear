@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.example.backend_java.model.nivelCliente;
+import com.example.backend_java.model.Status;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -32,6 +33,9 @@ public class ClienteDTO {
 
     @NotNull(message = "O nível do cliente é obrigatório")
     private nivelCliente nivel_cliente;
+
+    @NotNull(message = "O status do cliente é obrigatório")
+    private Status status;
 
     @NotNull(message = "O faturamento anual é obrigatório")
     @DecimalMin(value = "0.0", message = "O faturamento não pode ser negativo")
@@ -88,6 +92,14 @@ public class ClienteDTO {
 
     public void setNivel_cliente(nivelCliente nivel_cliente) {
         this.nivel_cliente = nivel_cliente;
+    }
+
+    public Status getStatus(){
+        return status;
+    }
+
+    public void setStatus(Status status){
+        this.status = status;
     }
 
     public BigDecimal getFaturamento_anual() {
