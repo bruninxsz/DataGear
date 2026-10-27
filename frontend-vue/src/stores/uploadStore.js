@@ -65,6 +65,19 @@ export const useUploadStore = defineStore("upload", {
   },
 
   actions: {
+    // Auxiliar para converter valores formatados (ex: R$ 1.850.000,00) em número puro (1850000.00)
+    limparFaturamento(valor) {
+      if (typeof valor === "number") return valor;
+      if (!valor) return 0;
+
+      const limpo = String(valor)
+        .replace(/[R$\s]/g, "")
+        .replace(/\./g, "")
+        .replace(",", ".");
+
+      return parseFloat(limpo) || 0;
+    },
+
     // Apenas recebe o arquivo
     selecionarArquivo(file) {
       this.erro = "";
@@ -171,6 +184,7 @@ export const useUploadStore = defineStore("upload", {
       this.processando = false;
       this.validacaoRealizada = false;
     },
+
     validarDados() {
       this.erros = [];
 
@@ -182,6 +196,7 @@ export const useUploadStore = defineStore("upload", {
         "nivel_cliente",
         "faturamento_anual",
         "servicos_contratados",
+        "status",
         "data_contratacao",
         "cidade",
         "uf",
@@ -274,7 +289,7 @@ export const useUploadStore = defineStore("upload", {
           linha.faturamento_anual !== undefined &&
           linha.faturamento_anual !== ""
         ) {
-          const faturamento = Number(linha.faturamento_anual);
+          const faturamento = this.limparFaturamento(linha.faturamento_anual);
 
           if (isNaN(faturamento) || faturamento < 0) {
             this.erros.push({
@@ -352,9 +367,9 @@ export const useUploadStore = defineStore("upload", {
           consultor: String(linha.consultor || "").trim(),
           segmento: String(linha.segmento || "").trim(),
           nivel_cliente: String(linha.nivel_cliente || "").toUpperCase(),
-          faturamento_anual: Number(linha.faturamento_anual),
+          faturamento_anual: this.limparFaturamento(linha.faturamento_anual),
           servicos_contratados: String(linha.servicos_contratados || "").trim(),
-          // Garante que a data seja formatada como YYYY-MM-DD (ISO string) para o LocalDate do Spring
+          status: String(linha.status || "").trim().toUpperCase(),
           data_contratacao: linha.data_contratacao
             ? new Date(linha.data_contratacao).toISOString().split("T")[0]
             : null,

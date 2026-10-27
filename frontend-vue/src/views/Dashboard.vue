@@ -24,164 +24,175 @@
         </p>
       </section>
 
-      <!-- KPIs -->
-      <section
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full max-w-7xl"
-      >
-        <!-- CLIENTES -->
-        <div
-          class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-sm shadow-cyan-500/10 hover:border-cyan-500/40 duration-300"
-        >
-          <p class="text-sm text-zinc-400">Total de clientes</p>
-          <h2 class="text-3xl font-bold text-cyan-300 mt-2">
-            {{ dados.length }}
-          </h2>
-        </div>
+      <!-- FEEDBACK DE CARREGAMENTO OU ERRO -->
+      <div v-if="carregando" class="text-cyan-400 font-semibold animate-pulse">
+        Carregando dados do servidor...
+      </div>
 
-        <!-- CONTRATAÇÕES -->
-        <div
-          class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-sm shadow-cyan-500/10 hover:border-cyan-500/40 duration-300"
-        >
-          <p class="text-sm text-zinc-400">Total de contratações</p>
-          <h2 class="text-3xl font-bold text-green-300 mt-2">
-            {{ totalContratacoes }}
-          </h2>
-        </div>
+      <div v-else-if="erro" class="text-red-400 bg-red-950/40 p-4 rounded-lg border border-red-800">
+        {{ erro }}
+      </div>
 
-        <!-- FATURAMENTO -->
-        <div
-          class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-sm shadow-cyan-500/10 hover:border-cyan-500/40 duration-300"
+      <template v-else>
+        <!-- KPIs -->
+        <section
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full max-w-7xl"
         >
-          <p class="text-sm text-zinc-400">Faturamento total</p>
-          <h2 class="text-2xl md:text-3xl font-bold text-sky-300 mt-2">
-            {{ formatarMoeda(totalVendas) }}
-          </h2>
-        </div>
-
-        <!-- TICKET MÉDIO -->
-        <div
-          class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-sm shadow-cyan-500/10 hover:border-cyan-500/40 duration-300"
-        >
-          <p class="text-sm text-zinc-400">Ticket médio</p>
-          <h2 class="text-2xl md:text-3xl font-bold text-purple-300 mt-2">
-            {{ formatarMoeda(ticketMedio) }}
-          </h2>
-        </div>
-      </section>
-
-      <!-- GRÁFICOS -->
-      <section
-        class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-7xl"
-      >
-        <!-- GRÁFICO 1 -->
-        <div
-          class="bg-zinc-800/70 border border-zinc-700 rounded-xl p-6 md:p-8 shadow-sm shadow-cyan-500/10"
-        >
-          <div class="mb-6">
-            <h2 class="text-xl md:text-2xl font-semibold">
-              Distribuição por segmento
+          <!-- CLIENTES -->
+          <div
+            class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-sm shadow-cyan-500/10 hover:border-cyan-500/40 duration-300"
+          >
+            <p class="text-sm text-zinc-400">Total de clientes</p>
+            <h2 class="text-3xl font-bold text-cyan-300 mt-2">
+              {{ dados.length }}
             </h2>
-            <p class="text-sm text-zinc-400 mt-1">
-              Valor total de vendas por segmento.
-            </p>
           </div>
 
-          <div class="relative w-full h-80">
-            <canvas ref="graficoSegmento"></canvas>
-          </div>
-        </div>
-
-        <!-- GRÁFICO 2 -->
-        <div
-          class="bg-zinc-800/70 border border-zinc-700 rounded-xl p-6 md:p-8 shadow-sm shadow-cyan-500/10"
-        >
-          <div class="mb-6">
-            <h2 class="text-xl md:text-2xl font-semibold">
-              Distribuição por nível
+          <!-- CONTRATAÇÕES -->
+          <div
+            class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-sm shadow-cyan-500/10 hover:border-cyan-500/40 duration-300"
+          >
+            <p class="text-sm text-zinc-400">Total de contratações</p>
+            <h2 class="text-3xl font-bold text-green-300 mt-2">
+              {{ totalContratacoes }}
             </h2>
-            <p class="text-sm text-zinc-400 mt-1">
-              Distribuição dos clientes entre os níveis A, B e C.
-            </p>
           </div>
 
-          <div class="relative w-full h-80 flex justify-center">
-            <canvas ref="graficoNivel"></canvas>
-          </div>
-        </div>
-
-        <!-- GRÁFICO 3 -->
-        <div
-          class="lg:col-span-2 bg-zinc-800/70 border border-zinc-700 rounded-xl p-6 md:p-8 shadow-sm shadow-cyan-500/10"
-        >
-          <div class="mb-6">
-            <h2 class="text-xl md:text-2xl font-semibold">
-              Evolução de contratações
+          <!-- FATURAMENTO -->
+          <div
+            class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-sm shadow-cyan-500/10 hover:border-cyan-500/40 duration-300"
+          >
+            <p class="text-sm text-zinc-400">Faturamento total</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-sky-300 mt-2">
+              {{ formatarMoeda(totalVendas) }}
             </h2>
-            <p class="text-sm text-zinc-400 mt-1">
-              Quantidade de novas contratações ao longo dos meses.
-            </p>
           </div>
 
-          <div class="relative w-full h-80 md:h-96">
-            <canvas ref="graficoContratacoes"></canvas>
-          </div>
-        </div>
-      </section>
-
-      <!-- RESUMO -->
-      <section class="w-full max-w-7xl">
-        <div
-          class="rounded-xl border border-zinc-800 bg-zinc-900/50 overflow-hidden"
-        >
-          <div class="p-6 border-b border-zinc-800">
-            <h2 class="text-xl md:text-2xl font-semibold">
-              Resumo comercial
+          <!-- TICKET MÉDIO -->
+          <div
+            class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-sm shadow-cyan-500/10 hover:border-cyan-500/40 duration-300"
+          >
+            <p class="text-sm text-zinc-400">Ticket médio</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-purple-300 mt-2">
+              {{ formatarMoeda(ticketMedio) }}
             </h2>
-            <p class="text-sm text-zinc-400 mt-1">
-              Principais informações encontradas nos dados analisados.
-            </p>
+          </div>
+        </section>
+
+        <!-- GRÁFICOS -->
+        <section
+          class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-7xl"
+        >
+          <!-- GRÁFICO 1 -->
+          <div
+            class="bg-zinc-800/70 border border-zinc-700 rounded-xl p-6 md:p-8 shadow-sm shadow-cyan-500/10"
+          >
+            <div class="mb-6">
+              <h2 class="text-xl md:text-2xl font-semibold">
+                Distribuição por segmento
+              </h2>
+              <p class="text-sm text-zinc-400 mt-1">
+                Valor total de vendas por segmento.
+              </p>
+            </div>
+
+            <div class="relative w-full h-80">
+              <canvas ref="graficoSegmento"></canvas>
+            </div>
           </div>
 
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead class="bg-zinc-800">
-                <tr>
-                  <th class="px-6 py-4 text-left text-zinc-400">Indicador</th>
-                  <th class="px-6 py-4 text-left text-zinc-400">Resultado</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-t border-zinc-800">
-                  <td class="px-6 py-4 text-zinc-300">Maior venda</td>
-                  <td class="px-6 py-4 text-cyan-300 font-semibold">
-                    {{ formatarMoeda(maiorVenda) }}
-                  </td>
-                </tr>
-                <tr class="border-t border-zinc-800">
-                  <td class="px-6 py-4 text-zinc-300">
-                    Segmento com maior faturamento
-                  </td>
-                  <td class="px-6 py-4 text-cyan-300 font-semibold">
-                    {{ maiorSegmento }}
-                  </td>
-                </tr>
-                <tr class="border-t border-zinc-800">
-                  <td class="px-6 py-4 text-zinc-300">Nível predominante</td>
-                  <td class="px-6 py-4 text-cyan-300 font-semibold">
-                    Nível {{ nivelPredominante }}
-                  </td>
-                </tr>
-                <tr class="border-t border-zinc-800">
-                  <td class="px-6 py-4 text-zinc-300">Total de segmentos</td>
-                  <td class="px-6 py-4 text-cyan-300 font-semibold">
-                    {{ Object.keys(vendasPorSegmento).length }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <!-- GRÁFICO 2 -->
+          <div
+            class="bg-zinc-800/70 border border-zinc-700 rounded-xl p-6 md:p-8 shadow-sm shadow-cyan-500/10"
+          >
+            <div class="mb-6">
+              <h2 class="text-xl md:text-2xl font-semibold">
+                Distribuição por nível
+              </h2>
+              <p class="text-sm text-zinc-400 mt-1">
+                Distribuição dos clientes entre os níveis A, B e C.
+              </p>
+            </div>
+
+            <div class="relative w-full h-80 flex justify-center">
+              <canvas ref="graficoNivel"></canvas>
+            </div>
           </div>
-        </div>
-      </section>
+
+          <!-- GRÁFICO 3 -->
+          <div
+            class="lg:col-span-2 bg-zinc-800/70 border border-zinc-700 rounded-xl p-6 md:p-8 shadow-sm shadow-cyan-500/10"
+          >
+            <div class="mb-6">
+              <h2 class="text-xl md:text-2xl font-semibold">
+                Evolução de contratações
+              </h2>
+              <p class="text-sm text-zinc-400 mt-1">
+                Quantidade de novas contratações ao longo dos meses.
+              </p>
+            </div>
+
+            <div class="relative w-full h-80 md:h-96">
+              <canvas ref="graficoContratacoes"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- RESUMO -->
+        <section class="w-full max-w-7xl">
+          <div
+            class="rounded-xl border border-zinc-800 bg-zinc-900/50 overflow-hidden"
+          >
+            <div class="p-6 border-b border-zinc-800">
+              <h2 class="text-xl md:text-2xl font-semibold">
+                Resumo comercial
+              </h2>
+              <p class="text-sm text-zinc-400 mt-1">
+                Principais informações encontradas nos dados analisados.
+              </p>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-zinc-800">
+                  <tr>
+                    <th class="px-6 py-4 text-left text-zinc-400">Indicador</th>
+                    <th class="px-6 py-4 text-left text-zinc-400">Resultado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-t border-zinc-800">
+                    <td class="px-6 py-4 text-zinc-300">Maior venda</td>
+                    <td class="px-6 py-4 text-cyan-300 font-semibold">
+                      {{ formatarMoeda(maiorVenda) }}
+                    </td>
+                  </tr>
+                  <tr class="border-t border-zinc-800">
+                    <td class="px-6 py-4 text-zinc-300">
+                      Segmento com maior faturamento
+                    </td>
+                    <td class="px-6 py-4 text-cyan-300 font-semibold">
+                      {{ maiorSegmento }}
+                    </td>
+                  </tr>
+                  <tr class="border-t border-zinc-800">
+                    <td class="px-6 py-4 text-zinc-300">Nível predominante</td>
+                    <td class="px-6 py-4 text-cyan-300 font-semibold">
+                      Nível {{ nivelPredominante }}
+                    </td>
+                  </tr>
+                  <tr class="border-t border-zinc-800">
+                    <td class="px-6 py-4 text-zinc-300">Total de segmentos</td>
+                    <td class="px-6 py-4 text-cyan-300 font-semibold">
+                      {{ Object.keys(vendasPorSegmento).length }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </template>
     </main>
 
     <footer>
@@ -191,7 +202,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from "vue"
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from "vue"
+import api from "@/services/api"
 
 import Header from "../components/Header.vue"
 import Footer from "../components/Footer.vue"
@@ -228,6 +240,14 @@ Chart.register(
 )
 
 /* ============================== */
+/* ESTADOS DA REQUISIÇÃO */
+/* ============================== */
+
+const carregando = ref(true)
+const erro = ref("")
+const dados = ref([])
+
+/* ============================== */
 /* REFERÊNCIAS DOS GRÁFICOS */
 /* ============================== */
 
@@ -240,109 +260,47 @@ let chartNivel = null
 let chartContratacoes = null
 
 /* ============================== */
-/* DADOS */
+/* BUSCA DE DADOS DA API */
 /* ============================== */
 
-const dados = ref([
-  {
-    nome: "Bruno Silva",
-    idade: 22,
-    cidade: "Campinas",
-    segmento: "Tecnologia",
-    nivel: "A",
-    vendas: 4500,
-    contratacao: "2026-01"
-  },
-  {
-    nome: "Ana Oliveira",
-    idade: 28,
-    cidade: "São Paulo",
-    segmento: "Comércio",
-    nivel: "B",
-    vendas: 7200,
-    contratacao: "2026-01"
-  },
-  {
-    nome: "Carlos Santos",
-    idade: 35,
-    cidade: "Americana",
-    segmento: "Indústria",
-    nivel: "A",
-    vendas: 9800,
-    contratacao: "2026-02"
-  },
-  {
-    nome: "Mariana Souza",
-    idade: 24,
-    cidade: "Sumaré",
-    segmento: "Serviços",
-    nivel: "C",
-    vendas: 5300,
-    contratacao: "2026-02"
-  },
-  {
-    nome: "Lucas Ferreira",
-    idade: 31,
-    cidade: "Hortolândia",
-    segmento: "Comércio",
-    nivel: "B",
-    vendas: 6800,
-    contratacao: "2026-03"
-  },
-  {
-    nome: "Juliana Costa",
-    idade: 27,
-    cidade: "Campinas",
-    segmento: "Serviços",
-    nivel: "C",
-    vendas: 4100,
-    contratacao: "2026-03"
-  },
-  {
-    nome: "Rafael Almeida",
-    idade: 40,
-    cidade: "Valinhos",
-    segmento: "Indústria",
-    nivel: "A",
-    vendas: 12500,
-    contratacao: "2026-04"
-  },
-  {
-    nome: "Beatriz Martins",
-    idade: 29,
-    cidade: "Vinhedo",
-    segmento: "Tecnologia",
-    nivel: "A",
-    vendas: 8900,
-    contratacao: "2026-05"
-  },
-  {
-    nome: "Gabriel Rodrigues",
-    idade: 33,
-    cidade: "Paulínia",
-    segmento: "Indústria",
-    nivel: "B",
-    vendas: 11200,
-    contratacao: "2026-05"
-  },
-  {
-    nome: "Larissa Gomes",
-    idade: 26,
-    cidade: "Campinas",
-    segmento: "Comércio",
-    nivel: "C",
-    vendas: 6100,
-    contratacao: "2026-06"
+async function buscarDadosDoBackend() {
+  carregando.value = true
+  erro.value = ""
+
+  try {
+    const resposta = await api.get("/api/cliente/listar")
+    
+    // Mapeia os atributos retornados pela entidade/DTO do Spring Boot
+    dados.value = (resposta.data || []).map((cliente) => ({
+      nome: cliente.nome_cliente || cliente.nomeCliente,
+      segmento: cliente.segmento || "Não informado",
+      nivel: cliente.nivel_cliente || cliente.nivelCliente || "C",
+      vendas: Number(cliente.faturamento_anual || cliente.faturamentoAnual || 0),
+      // Extrai o ano-mês da data (YYYY-MM) para o gráfico de evolução
+      contratacao: cliente.data_contratacao || cliente.dataContratacao
+        ? String(cliente.data_contratacao || cliente.dataContratacao).substring(0, 7)
+        : "Sem data"
+    }))
+
+    // Aguarda o Vue atualizar o DOM após o fim do carregamento antes de montar os gráficos
+    await nextTick()
+    renderizarGraficos()
+  } catch (err) {
+    console.error("Erro ao carregar dados do dashboard:", err)
+    erro.value = "Não foi possível carregar os dados comerciais."
+  } finally {
+    carregando.value = false
   }
-])
+}
 
 /* ============================== */
 /* INDICADORES (COMPUTED) */
 /* ============================== */
 
-const maiorVenda = computed(() =>
-  Math.max(...dados.value.map((cliente) => cliente.vendas))
-)
+const maiorVenda = computed(() => {
+  if (!dados.value.length) return 0
+  return Math.max(...dados.value.map((cliente) => cliente.vendas))
+})
 
 const totalVendas = computed(() =>
   dados.value.reduce((total, cliente) => total + cliente.vendas, 0)
@@ -369,14 +327,20 @@ const vendasPorSegmento = computed(() => {
 const clientesPorNivel = computed(() => {
   const acc = { A: 0, B: 0, C: 0 }
   dados.value.forEach((cliente) => {
-    if (acc[cliente.nivel] !== undefined) acc[cliente.nivel]++
+    const n = String(cliente.nivel).toUpperCase()
+    if (acc[n] !== undefined) acc[n]++
   })
   return acc
 })
 
 const contratacoesPorMes = computed(() => {
   const acc = {}
-  dados.value.forEach((cliente) => {
+  // Ordena os meses cronologicamente para a linha do gráfico
+  const dadosOrdenados = [...dados.value].sort((a, b) =>
+    a.contratacao.localeCompare(b.contratacao)
+  )
+
+  dadosOrdenados.forEach((cliente) => {
     acc[cliente.contratacao] = (acc[cliente.contratacao] || 0) + 1
   })
   return acc
@@ -407,7 +371,18 @@ function formatarMoeda(valor) {
 /* GRÁFICOS */
 /* ============================== */
 
-onMounted(() => {
+function destruirGraficos() {
+  chartSegmento?.destroy()
+  chartNivel?.destroy()
+  chartContratacoes?.destroy()
+  chartSegmento = null
+  chartNivel = null
+  chartContratacoes = null
+}
+
+function renderizarGraficos() {
+  destruirGraficos()
+
   /* GRÁFICO DE SEGMENTOS */
   if (graficoSegmento.value) {
     chartSegmento = new Chart(graficoSegmento.value, {
@@ -545,15 +520,17 @@ onMounted(() => {
       }
     })
   }
+}
+
+/* ============================== */
+/* CICLO DE VIDA */
+/* ============================== */
+
+onMounted(() => {
+  buscarDadosDoBackend()
 })
 
-/* ============================== */
-/* LIMPEZA */
-/* ============================== */
-
 onBeforeUnmount(() => {
-  chartSegmento?.destroy()
-  chartNivel?.destroy()
-  chartContratacoes?.destroy()
+  destruirGraficos()
 })
 </script>

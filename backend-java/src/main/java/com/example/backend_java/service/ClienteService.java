@@ -1,4 +1,3 @@
-
 package com.example.backend_java.service;
 
 import java.util.ArrayList;
@@ -70,6 +69,12 @@ public class ClienteService {
                     + ": nível do cliente obrigatório.");
             }
 
+            // CORREÇÃO 1: Validação de obrigatoriedade do status
+            if (dto.getStatus() == null) {
+                erros.add("Linha " + linha
+                    + ": status do cliente obrigatório.");
+            }
+
             if (dto.getFaturamento_anual() == null
                     || dto.getFaturamento_anual().signum() < 0) {
                 erros.add("Linha " + linha
@@ -111,6 +116,10 @@ public class ClienteService {
                 cliente.setConsultor(dto.getConsultor());
                 cliente.setSegmento(dto.getSegmento());
                 cliente.setNivel_cliente(dto.getNivel_cliente());
+                
+                // CORREÇÃO 2: Atribuição do status para a entidade JPA
+                cliente.setStatus(dto.getStatus());
+
                 cliente.setFaturamento_anual(
                     dto.getFaturamento_anual()
                 );
