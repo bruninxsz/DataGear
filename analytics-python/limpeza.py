@@ -10,7 +10,7 @@ COLUNAS = [                                                                     
     "codigo_cliente", "nome_cliente", "consultor", "segmento", "nivel_cliente",     # (continuação)
     "faturamento_anual", "servicos_contratados", "status", "data_contratacao", "cidade", "uf",  # (continuação)
 ]                                                                                   # fecha o bloco
-OBRIGATORIAS = COLUNAS[:8]                                                          # as 8 primeiras são obrigatórias
+OBRIGATORIAS = COLUNAS
 
 # Chave = texto sem acento, minúsculo e sem pontuação (veja _simples). Valor = nome padronizado.
 SEGMENTOS = {                                                                       # dicionário: texto simplificado -> nome oficial do segmento
@@ -32,7 +32,8 @@ SERVICOS = {                                                                    
 
 STATUS = {
   "ativo": "Ativo", 
-  "inativo": "Inativo"
+  "inativo": "Inativo",
+  "encerrado": "Inativo"
   }                                                # status aceitos
 
 NIVEIS = {"A", "B", "C"}                                                            # níveis aceitos
@@ -172,6 +173,7 @@ def tratar(bruto: pd.DataFrame) -> ResultadoTransformacao:                      
     df["consultor"] = _aplicar(df["consultor"], titulo)                             # consultor em formato Título
     df["nivel_cliente"] = _aplicar(df["nivel_cliente"], lambda x: x.upper() if x else x)  # nível em maiúsculas
     df["uf"] = _aplicar(df["uf"], lambda x: x.upper() if x and len(x) == 2 and x.isalpha() else None)  # UF em maiúsculas (ou None se inválida)
+    df["status"] = _aplicar(df["status"], lambda x: STATUS.get(_simples(x)) if x else None)
     df["servicos"] = _aplicar(df["servicos_contratados"], padronizar_servicos)      # serviços viram lista
 
     # ---- conversão de tipos ----

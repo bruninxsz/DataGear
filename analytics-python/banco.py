@@ -48,7 +48,6 @@ def gravar_resultado(
     """
     clientes_inseridos = 0
     clientes_atualizados = 0
-    servicos_processados: set[str] = set()
 
     with engine.begin() as conn:
         for linha in tratado.itertuples(index=False):
@@ -57,6 +56,8 @@ def gravar_resultado(
             consultor_nome = _texto(getattr(linha, "consultor", None), 255)
             segmento = _texto(getattr(linha, "segmento", None), 120)
             nivel = _texto(getattr(linha, "nivel_cliente", None), 1)
+            status_entrada = (_texto(getattr(linha, "status", None), 20) or "Ativo").lower()
+            status = "ENCERRADO" if status_entrada in {"inativo", "encerrado"} else "ATIVO"
             faturamento = float(linha.faturamento_anual)
             cidade = _texto(getattr(linha, "cidade", None), 120)
             uf = _texto(getattr(linha, "uf", None), 2)
@@ -81,6 +82,7 @@ def gravar_resultado(
                 "segmento": segmento,
                 "fat": round(faturamento, 2),
                 "nivel": nivel,
+                "status": status,
                 "cidade": cidade,
                 "uf": uf,
                 "consultor": consultor_nome,
@@ -95,6 +97,7 @@ def gravar_resultado(
                         segmento = :segmento,
                         faturamento_anual = :fat,
                         nivel_cliente = :nivel,
+                        status = CAST(:status AS status_cliente),
                         cidade = :cidade,
                         uf = :uf,
                         consultor = :consultor,
@@ -107,12 +110,12 @@ def gravar_resultado(
                 cliente_id = conn.execute(text("""
                     INSERT INTO public.cliente (
                         codigo_cliente, nome_cliente, segmento, faturamento_anual,
-                        nivel_cliente, cidade, uf, consultor,
+                        nivel_cliente, status, cidade, uf, consultor,
                         servicos_contratados, data_contratacao
                     )
                     VALUES (
                         :codigo, :nome, :segmento, :fat,
-                        :nivel, :cidade, :uf, :consultor,
+                        :nivel, CAST(:status AS status_cliente), :cidade, :uf, :consultor,
                         :servicos, :data
                     )
                     RETURNING id_cliente
@@ -120,16 +123,6 @@ def gravar_resultado(
                 clientes_inseridos += 1
 
             # Mantém o catálogo de serviços sincronizado sem presumir IDs.
-            for nome_servico in servicos:
-                servicos_processados.add(nome_servico)
-                conn.execute(text("""
-                    INSERT INTO public.servico (nome)
-                    SELECT :nome
-                    WHERE NOT EXISTS (
-                        SELECT 1 FROM public.servico WHERE lower(nome) = lower(:nome)
-                    )
-                """), {"nome": nome_servico[:255]})
-
         # A tabela insight aceita registros textuais, não um JSON completo.
         # Registramos cada frase gerada como um insight do ETL.
         insights = payload.get("insights", [])
@@ -140,10 +133,10 @@ def gravar_resultado(
             conn.execute(text("""
                 INSERT INTO public.insight (tipo, descricao, data_geracao)
                 VALUES (:tipo, :descricao, CURRENT_DATE)
-            """), {"tipo": "ETL", "descricao": descricao[:255]})
+            """), {"tipo": "ETL", "descricao": descricao[:200]})
 
     log.info(
-        "ETL gravado. Clientes novos: %s; atualizados: %s; serviços vistos: %s; insights: %s",
-        clientes_inseridos, clientes_atualizados, len(servicos_processados),
+        "ETL gravado. Clientes novos: %s; atualizados: %s; insights: %s",
+        clientes_inseridos, clientes_atualizados,
         len(payload.get("insights", [])),
     )

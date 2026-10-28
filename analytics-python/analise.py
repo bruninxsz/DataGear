@@ -150,6 +150,7 @@ def calcular(res: ResultadoTransformacao, linhas_recebidas: int) -> dict:       
             "correcoesNivel": res.padronizacoes["nivel_cliente"],                   # correções de nível
             "segmentosOriginais": res.segmentos_originais,                          # segmentos que foram corrigidos
             "avisos": res.avisos,                                                   # avisos
+            "rejeitadas": res.rejeitadas.to_dict(orient="records"),                # linhas recusadas com motivos
         },                                                                          # fim da qualidade
         "insights": gerar_insights(resumo, por_segmento, por_nivel, por_consultor, por_servico, por_mes, correlacao),  # frases de insights
     }                                                                               # fim do dicionário

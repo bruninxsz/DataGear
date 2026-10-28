@@ -5,6 +5,7 @@ import logging
 from typing import Any
 
 import pandas as pd
+from sqlalchemy import text
 
 from analise import calcular
 from limpeza import tratar
@@ -24,10 +25,22 @@ def processar_lote(
     bruto = pd.DataFrame(linhas).astype(object)
     resultado = tratar(bruto)
 
-    if resultado.tratado.empty:
-        raise ValueError("Nenhum cliente passou pelas validações do ETL.")
-
     total_recebidas = len(linhas) if recebidas is None else recebidas
+    if resultado.tratado.empty:
+        return {
+            "resumo": {"totalClientes": 0, "faturamentoTotal": 0, "media": 0},
+            "porSegmento": [],
+            "porNivel": [],
+            "porMes": [],
+            "insights": [],
+            "qualidade": {
+                "linhasRecebidas": total_recebidas,
+                "linhasValidas": 0,
+                "linhasInvalidas": total_recebidas,
+                "rejeitadas": resultado.rejeitadas.to_dict(orient="records"),
+            },
+        }
+
     payload = calcular(resultado, total_recebidas)
 
     import banco
@@ -43,3 +56,26 @@ def processar_lote(
         len(resultado.rejeitadas),
     )
     return payload
+
+
+def obter_dashboard(engine) -> dict:
+    """Recalcula o dashboard usando os clientes salvos no banco pelo ETL."""
+    bruto = pd.read_sql(
+        text("""
+            SELECT codigo_cliente, nome_cliente, consultor, segmento, nivel_cliente,
+                   faturamento_anual, servicos_contratados, status,
+                   data_contratacao, cidade, uf
+            FROM public.cliente
+            ORDER BY id_cliente
+        """),
+        engine,
+    ).astype(object)
+
+    if bruto.empty:
+        raise ValueError("Ainda não há clientes importados para gerar o dashboard.")
+
+    resultado = tratar(bruto)
+    if resultado.tratado.empty:
+        raise ValueError("Não há clientes válidos para gerar o dashboard.")
+
+    return calcular(resultado, len(bruto))

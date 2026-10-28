@@ -1,375 +1,240 @@
 <template>
-  <div
-    class="min-h-screen bg-zinc-900 text-white flex flex-col gap-4 md:gap-8 font-sans selection:bg-cyan-500 selection:text-zinc-900"
-  >
+  <div class="min-h-screen bg-zinc-900 text-white flex flex-col gap-8 font-sans">
     <Header />
 
-    <main
-      class="flex-1 flex items-center flex-col gap-10 md:gap-14 lg:gap-16 px-6 py-12 lg:py-24"
-    >
-      <!-- TÍTULO -->
-      <section id="titulo" class="relative z-10 text-center">
-        <div
-          class="absolute bg-sky-200/60 rounded-full z-0 w-32 md:w-64 lg:w-96 h-12 blur-3xl"
-        ></div>
-
-        <h1
-          class="relative z-10 font-bold bg-gradient-to-r from-sky-200 to-cyan-600 bg-clip-text text-transparent text-2xl md:text-4xl lg:text-5xl hover:scale-105 duration-300"
-        >
+    <main class="flex-1 flex flex-col items-center gap-10 px-6 py-12 lg:py-20">
+      <section class="relative z-10 text-center">
+        <div class="absolute left-1/2 -translate-x-1/2 bg-sky-200/50 rounded-full w-64 h-12 blur-3xl"></div>
+        <h1 class="relative font-bold bg-gradient-to-r from-sky-200 to-cyan-500 bg-clip-text text-transparent text-3xl md:text-5xl">
           Dashboard
         </h1>
-
-        <p class="relative z-10 text-zinc-400 mt-3 text-sm md:text-base">
-          Visão geral dos dados comerciais analisados.
-        </p>
+        <p class="relative text-zinc-400 mt-3">Indicadores e insights calculados pelo serviço Python.</p>
       </section>
 
-      <!-- FEEDBACK DE CARREGAMENTO OU ERRO -->
-      <div v-if="carregando" class="text-cyan-400 font-semibold animate-pulse">
-        Carregando dados do servidor...
+      <div v-if="carregando" class="text-cyan-300 animate-pulse" role="status">
+        Carregando a análise...
       </div>
 
-      <div v-else-if="erro" class="text-red-400 bg-red-950/40 p-4 rounded-lg border border-red-800">
-        {{ erro }}
-      </div>
+      <section v-else-if="erro" class="w-full max-w-3xl rounded-xl border border-red-800 bg-red-950/40 p-6 text-center">
+        <p class="text-red-300">{{ erro }}</p>
+        <button class="mt-4 rounded-lg bg-zinc-800 px-4 py-2 hover:bg-zinc-700" @click="carregarDashboard">
+          Tentar novamente
+        </button>
+      </section>
 
       <template v-else>
-        <!-- KPIs -->
-        <section
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full max-w-7xl"
-        >
-          <!-- CLIENTES -->
-          <div
-            class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-sm shadow-cyan-500/10 hover:border-cyan-500/40 duration-300"
-          >
-            <p class="text-sm text-zinc-400">Total de clientes</p>
-            <h2 class="text-3xl font-bold text-cyan-300 mt-2">
-              {{ dados.length }}
-            </h2>
-          </div>
-
-          <!-- CONTRATAÇÕES -->
-          <div
-            class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-sm shadow-cyan-500/10 hover:border-cyan-500/40 duration-300"
-          >
-            <p class="text-sm text-zinc-400">Total de contratações</p>
-            <h2 class="text-3xl font-bold text-green-300 mt-2">
-              {{ totalContratacoes }}
-            </h2>
-          </div>
-
-          <!-- FATURAMENTO -->
-          <div
-            class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-sm shadow-cyan-500/10 hover:border-cyan-500/40 duration-300"
-          >
+        <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 w-full max-w-7xl">
+          <article class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6">
+            <p class="text-sm text-zinc-400">Clientes analisados</p>
+            <p class="mt-2 text-3xl font-bold text-cyan-300">{{ resumo.totalClientes || 0 }}</p>
+          </article>
+          <article class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6">
             <p class="text-sm text-zinc-400">Faturamento total</p>
-            <h2 class="text-2xl md:text-3xl font-bold text-sky-300 mt-2">
-              {{ formatarMoeda(totalVendas) }}
-            </h2>
-          </div>
-
-          <!-- TICKET MÉDIO -->
-          <div
-            class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-sm shadow-cyan-500/10 hover:border-cyan-500/40 duration-300"
-          >
-            <p class="text-sm text-zinc-400">Ticket médio</p>
-            <h2 class="text-2xl md:text-3xl font-bold text-purple-300 mt-2">
-              {{ formatarMoeda(ticketMedio) }}
-            </h2>
-          </div>
+            <p class="mt-2 text-2xl font-bold text-sky-300">{{ formatarMoeda(resumo.faturamentoTotal) }}</p>
+          </article>
+          <article class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6">
+            <p class="text-sm text-zinc-400">Faturamento medio por cliente</p>
+            <p class="mt-2 text-2xl font-bold text-purple-300">{{ formatarMoeda(resumo.media) }}</p>
+          </article>
+          <article class="rounded-xl border border-zinc-800 bg-zinc-900/60 p-6">
+            <p class="text-sm text-zinc-400">Servico mais contratado</p>
+            <p class="mt-2 text-xl font-bold text-green-300">{{ resumo.servicoMaisContratado || '—' }}</p>
+          </article>
         </section>
 
-        <!-- GRÁFICOS -->
-        <section
-          class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-7xl"
-        >
-          <!-- GRÁFICO 1 -->
-          <div
-            class="bg-zinc-800/70 border border-zinc-700 rounded-xl p-6 md:p-8 shadow-sm shadow-cyan-500/10"
-          >
-            <div class="mb-6">
-              <h2 class="text-xl md:text-2xl font-semibold">
-                Distribuição por segmento
-              </h2>
-              <p class="text-sm text-zinc-400 mt-1">
-                Valor total de vendas por segmento.
-              </p>
-            </div>
-
-            <div class="relative w-full h-80">
-              <canvas ref="graficoSegmento"></canvas>
-            </div>
+        <section v-if="insights.length" class="w-full max-w-7xl rounded-xl border border-cyan-900/70 bg-cyan-950/20 p-6 md:p-8">
+          <div class="mb-5">
+            <h2 class="text-xl md:text-2xl font-semibold text-cyan-100">Insights</h2>
+            <p class="mt-1 text-sm text-zinc-400">Conclusoes geradas pelo ETL Python a partir dos dados tratados.</p>
           </div>
-
-          <!-- GRÁFICO 2 -->
-          <div
-            class="bg-zinc-800/70 border border-zinc-700 rounded-xl p-6 md:p-8 shadow-sm shadow-cyan-500/10"
-          >
-            <div class="mb-6">
-              <h2 class="text-xl md:text-2xl font-semibold">
-                Distribuição por nível
-              </h2>
-              <p class="text-sm text-zinc-400 mt-1">
-                Distribuição dos clientes entre os níveis A, B e C.
-              </p>
-            </div>
-
-            <div class="relative w-full h-80 flex justify-center">
-              <canvas ref="graficoNivel"></canvas>
-            </div>
-          </div>
-
-          <!-- GRÁFICO 3 -->
-          <div
-            class="lg:col-span-2 bg-zinc-800/70 border border-zinc-700 rounded-xl p-6 md:p-8 shadow-sm shadow-cyan-500/10"
-          >
-            <div class="mb-6">
-              <h2 class="text-xl md:text-2xl font-semibold">
-                Evolução de contratações
-              </h2>
-              <p class="text-sm text-zinc-400 mt-1">
-                Quantidade de novas contratações ao longo dos meses.
-              </p>
-            </div>
-
-            <div class="relative w-full h-80 md:h-96">
-              <canvas ref="graficoContratacoes"></canvas>
-            </div>
-          </div>
+          <ul class="grid gap-3 md:grid-cols-2">
+            <li v-for="(insight, index) in insights" :key="index" class="rounded-lg border border-zinc-800 bg-zinc-900/70 p-4 text-zinc-200">
+              {{ insight }}
+            </li>
+          </ul>
+        </section>
+        <section v-else class="w-full max-w-7xl rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 text-zinc-400">
+          Ainda nao ha insights para exibir.
         </section>
 
-        <!-- RESUMO -->
-        <section class="w-full max-w-7xl">
-          <div
-            class="rounded-xl border border-zinc-800 bg-zinc-900/50 overflow-hidden"
-          >
-            <div class="p-6 border-b border-zinc-800">
-              <h2 class="text-xl md:text-2xl font-semibold">
-                Resumo comercial
-              </h2>
-              <p class="text-sm text-zinc-400 mt-1">
-                Principais informações encontradas nos dados analisados.
-              </p>
-            </div>
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-7xl">
+          <article class="rounded-xl border border-zinc-700 bg-zinc-800/70 p-6">
+            <h2 class="text-xl font-semibold">Faturamento por segmento</h2>
+            <p class="mt-1 text-sm text-zinc-400">Soma calculada pelo Python em cada segmento.</p>
+            <div class="relative mt-5 h-80"><canvas ref="graficoSegmento" aria-label="Faturamento por segmento"></canvas></div>
+          </article>
 
-            <div class="overflow-x-auto">
+          <article class="rounded-xl border border-zinc-700 bg-zinc-800/70 p-6">
+            <h2 class="text-xl font-semibold">Clientes por nivel</h2>
+            <p class="mt-1 text-sm text-zinc-400">Distribuicao dos clientes nos niveis A, B e C.</p>
+            <div class="relative mt-5 flex h-80 justify-center"><canvas ref="graficoNivel" aria-label="Clientes por nivel"></canvas></div>
+          </article>
+
+          <article class="rounded-xl border border-zinc-700 bg-zinc-800/70 p-6 lg:col-span-2">
+            <h2 class="text-xl font-semibold">Contratacoes por mes</h2>
+            <p class="mt-1 text-sm text-zinc-400">Contagem mensal calculada pelo Python.</p>
+            <div class="relative mt-5 h-80"><canvas ref="graficoContratacoes" aria-label="Contratacoes por mes"></canvas></div>
+          </article>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-7xl">
+          <article class="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/50">
+            <div class="border-b border-zinc-800 p-6">
+              <h2 class="text-xl font-semibold">Resumo estatistico</h2>
+              <p class="mt-1 text-sm text-zinc-400">Medidas calculadas sobre o faturamento anual tratado.</p>
+            </div>
+            <dl class="divide-y divide-zinc-800 px-6">
+              <div v-for="item in resumoEstatistico" :key="item.label" class="flex justify-between gap-4 py-3 text-sm">
+                <dt class="text-zinc-400">{{ item.label }}</dt>
+                <dd class="text-right font-medium text-cyan-200">{{ item.value }}</dd>
+              </div>
+            </dl>
+          </article>
+
+          <article class="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/50">
+            <div class="border-b border-zinc-800 p-6">
+              <h2 class="text-xl font-semibold">Maiores clientes</h2>
+              <p class="mt-1 text-sm text-zinc-400">Top 5 por faturamento anual, calculado pelo Python.</p>
+            </div>
+            <div v-if="topClientes.length" class="overflow-x-auto">
               <table class="w-full text-sm">
-                <thead class="bg-zinc-800">
-                  <tr>
-                    <th class="px-6 py-4 text-left text-zinc-400">Indicador</th>
-                    <th class="px-6 py-4 text-left text-zinc-400">Resultado</th>
-                  </tr>
+                <thead class="bg-zinc-800 text-zinc-400">
+                  <tr><th class="px-4 py-3 text-left">Cliente</th><th class="px-4 py-3 text-left">Segmento</th><th class="px-4 py-3 text-right">Faturamento</th></tr>
                 </thead>
                 <tbody>
-                  <tr class="border-t border-zinc-800">
-                    <td class="px-6 py-4 text-zinc-300">Maior venda</td>
-                    <td class="px-6 py-4 text-cyan-300 font-semibold">
-                      {{ formatarMoeda(maiorVenda) }}
-                    </td>
-                  </tr>
-                  <tr class="border-t border-zinc-800">
-                    <td class="px-6 py-4 text-zinc-300">
-                      Segmento com maior faturamento
-                    </td>
-                    <td class="px-6 py-4 text-cyan-300 font-semibold">
-                      {{ maiorSegmento }}
-                    </td>
-                  </tr>
-                  <tr class="border-t border-zinc-800">
-                    <td class="px-6 py-4 text-zinc-300">Nível predominante</td>
-                    <td class="px-6 py-4 text-cyan-300 font-semibold">
-                      Nível {{ nivelPredominante }}
-                    </td>
-                  </tr>
-                  <tr class="border-t border-zinc-800">
-                    <td class="px-6 py-4 text-zinc-300">Total de segmentos</td>
-                    <td class="px-6 py-4 text-cyan-300 font-semibold">
-                      {{ Object.keys(vendasPorSegmento).length }}
-                    </td>
+                  <tr v-for="cliente in topClientes" :key="cliente.codigo" class="border-t border-zinc-800">
+                    <td class="px-4 py-3"><span class="block">{{ cliente.nome }}</span><span class="text-xs text-zinc-500">{{ cliente.codigo }}</span></td>
+                    <td class="px-4 py-3 text-zinc-300">{{ cliente.segmento }}</td>
+                    <td class="px-4 py-3 text-right text-cyan-200">{{ formatarMoeda(cliente.faturamento) }}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-          </div>
+            <p v-else class="p-6 text-sm text-zinc-500">Sem clientes para listar.</p>
+          </article>
+        </section>
+
+        <section class="flex w-full max-w-7xl flex-wrap items-center justify-between gap-3 text-sm text-zinc-500">
+          <p v-if="analise.qualidade">Qualidade: {{ analise.qualidade.linhasValidas }} linhas validas de {{ analise.qualidade.linhasRecebidas }} analisadas.</p>
+          <p v-if="analise.geradoEm">Analise atualizada em {{ formatarData(analise.geradoEm) }}</p>
+          <button class="rounded-lg border border-zinc-700 px-4 py-2 text-zinc-300 hover:border-cyan-500 hover:text-cyan-200" @click="carregarDashboard">
+            Atualizar dados
+          </button>
         </section>
       </template>
     </main>
 
-    <footer>
-      <Footer />
-    </footer>
+    <Footer />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, nextTick } from "vue"
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from "vue"
 import api from "@/services/api"
-
 import Header from "../components/Header.vue"
 import Footer from "../components/Footer.vue"
-
 import {
-  Chart,
+  ArcElement,
   BarController,
   BarElement,
+  CategoryScale,
+  Chart,
   DoughnutController,
-  ArcElement,
+  Filler,
+  Legend,
+  LinearScale,
   LineController,
   LineElement,
   PointElement,
-  CategoryScale,
-  LinearScale,
   Tooltip,
-  Legend,
-  Filler
 } from "chart.js"
 
 Chart.register(
+  ArcElement,
   BarController,
   BarElement,
+  CategoryScale,
   DoughnutController,
-  ArcElement,
+  Filler,
+  Legend,
+  LinearScale,
   LineController,
   LineElement,
   PointElement,
-  CategoryScale,
-  LinearScale,
   Tooltip,
-  Legend,
-  Filler
 )
-
-/* ============================== */
-/* ESTADOS DA REQUISIÇÃO */
-/* ============================== */
 
 const carregando = ref(true)
 const erro = ref("")
-const dados = ref([])
-
-/* ============================== */
-/* REFERÊNCIAS DOS GRÁFICOS */
-/* ============================== */
-
+const analise = ref({})
 const graficoSegmento = ref(null)
 const graficoNivel = ref(null)
 const graficoContratacoes = ref(null)
-
 let chartSegmento = null
 let chartNivel = null
 let chartContratacoes = null
 
-/* ============================== */
-/* BUSCA DE DADOS DA API */
-/* ============================== */
+const resumo = computed(() => analise.value.resumo || {})
+const insights = computed(() => analise.value.insights || [])
+const topClientes = computed(() => analise.value.topClientes || [])
+const porSegmento = computed(() => analise.value.porSegmento || [])
+const porNivel = computed(() => analise.value.porNivel || [])
+const porMes = computed(() => analise.value.porMes || [])
 
-async function buscarDadosDoBackend() {
+const resumoEstatistico = computed(() => [
+  { label: "Mediana", value: formatarMoeda(resumo.value.mediana) },
+  { label: "Desvio padrao", value: formatarMoeda(resumo.value.desvioPadrao) },
+  { label: "Valor minimo", value: formatarMoeda(resumo.value.minimo) },
+  { label: "Primeiro quartil (Q1)", value: formatarMoeda(resumo.value.q1) },
+  { label: "Terceiro quartil (Q3)", value: formatarMoeda(resumo.value.q3) },
+  { label: "Valor maximo", value: formatarMoeda(resumo.value.maximo) },
+  { label: "Consultores", value: String(resumo.value.consultores ?? 0) },
+  { label: "Media de servicos por cliente", value: String(resumo.value.mediaServicosPorCliente ?? "—") },
+])
+
+function formatarMoeda(valor) {
+  if (valor === null || valor === undefined || valor === "") return "—"
+  const numero = Number(valor)
+  if (!Number.isFinite(numero)) return "—"
+  return numero.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+}
+
+function formatarData(valor) {
+  const data = new Date(valor)
+  return Number.isNaN(data.getTime()) ? valor : data.toLocaleString("pt-BR")
+}
+
+function mensagemErro(err) {
+  const detalhe = err.response?.data?.detail || err.response?.data?.message
+  if (typeof detalhe === "string") {
+    try {
+      const interno = JSON.parse(detalhe)
+      if (interno.detail) return interno.detail
+    } catch {
+      // A resposta pode ser uma mensagem textual simples.
+    }
+    return detalhe
+  }
+  return "Nao foi possivel carregar a analise do Python. Verifique se os servicos estao ativos."
+}
+
+async function carregarDashboard() {
   carregando.value = true
   erro.value = ""
+  destruirGraficos()
 
   try {
-    const resposta = await api.get("/api/cliente/listar")
-    
-    // Mapeia os atributos retornados pela entidade/DTO do Spring Boot
-    dados.value = (resposta.data || []).map((cliente) => ({
-      nome: cliente.nome_cliente || cliente.nomeCliente,
-      segmento: cliente.segmento || "Não informado",
-      nivel: cliente.nivel_cliente || cliente.nivelCliente || "C",
-      vendas: Number(cliente.faturamento_anual || cliente.faturamentoAnual || 0),
-      // Extrai o ano-mês da data (YYYY-MM) para o gráfico de evolução
-      contratacao: cliente.data_contratacao || cliente.dataContratacao
-        ? String(cliente.data_contratacao || cliente.dataContratacao).substring(0, 7)
-        : "Sem data"
-    }))
-
-    // Aguarda o Vue atualizar o DOM após o fim do carregamento antes de montar os gráficos
+    const resposta = await api.get("/api/cliente/dashboard")
+    analise.value = resposta.data || {}
     await nextTick()
     renderizarGraficos()
   } catch (err) {
-    console.error("Erro ao carregar dados do dashboard:", err)
-    erro.value = "Não foi possível carregar os dados comerciais."
+    console.error("Erro ao carregar dashboard analitico:", err)
+    erro.value = mensagemErro(err)
   } finally {
     carregando.value = false
   }
 }
-
-/* ============================== */
-/* INDICADORES (COMPUTED) */
-/* ============================== */
-
-const maiorVenda = computed(() => {
-  if (!dados.value.length) return 0
-  return Math.max(...dados.value.map((cliente) => cliente.vendas))
-})
-
-const totalVendas = computed(() =>
-  dados.value.reduce((total, cliente) => total + cliente.vendas, 0)
-)
-
-const ticketMedio = computed(() =>
-  dados.value.length ? totalVendas.value / dados.value.length : 0
-)
-
-const totalContratacoes = computed(() => dados.value.length)
-
-/* ============================== */
-/* AGREGAÇÕES (COMPUTED) */
-/* ============================== */
-
-const vendasPorSegmento = computed(() => {
-  const acc = {}
-  dados.value.forEach((cliente) => {
-    acc[cliente.segmento] = (acc[cliente.segmento] || 0) + cliente.vendas
-  })
-  return acc
-})
-
-const clientesPorNivel = computed(() => {
-  const acc = { A: 0, B: 0, C: 0 }
-  dados.value.forEach((cliente) => {
-    const n = String(cliente.nivel).toUpperCase()
-    if (acc[n] !== undefined) acc[n]++
-  })
-  return acc
-})
-
-const contratacoesPorMes = computed(() => {
-  const acc = {}
-  // Ordena os meses cronologicamente para a linha do gráfico
-  const dadosOrdenados = [...dados.value].sort((a, b) =>
-    a.contratacao.localeCompare(b.contratacao)
-  )
-
-  dadosOrdenados.forEach((cliente) => {
-    acc[cliente.contratacao] = (acc[cliente.contratacao] || 0) + 1
-  })
-  return acc
-})
-
-const maiorSegmento = computed(() => {
-  const entries = Object.entries(vendasPorSegmento.value)
-  return entries.sort((a, b) => b[1] - a[1])[0]?.[0] || "-"
-})
-
-const nivelPredominante = computed(() => {
-  const entries = Object.entries(clientesPorNivel.value)
-  return entries.sort((a, b) => b[1] - a[1])[0]?.[0] || "-"
-})
-
-/* ============================== */
-/* FORMATAÇÃO */
-/* ============================== */
-
-function formatarMoeda(valor) {
-  return (valor || 0).toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL"
-  })
-}
-
-/* ============================== */
-/* GRÁFICOS */
-/* ============================== */
 
 function destruirGraficos() {
   chartSegmento?.destroy()
@@ -380,157 +245,85 @@ function destruirGraficos() {
   chartContratacoes = null
 }
 
+function opcoesComuns() {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: "#e4e4e7" } },
+      tooltip: { titleColor: "#fff", bodyColor: "#e4e4e7" },
+    },
+  }
+}
+
 function renderizarGraficos() {
   destruirGraficos()
 
-  /* GRÁFICO DE SEGMENTOS */
-  if (graficoSegmento.value) {
+  if (graficoSegmento.value && porSegmento.value.length) {
     chartSegmento = new Chart(graficoSegmento.value, {
       type: "bar",
       data: {
-        labels: Object.keys(vendasPorSegmento.value),
-        datasets: [
-          {
-            label: "Vendas",
-            data: Object.values(vendasPorSegmento.value),
-            backgroundColor: ["#06b6d4", "#3b82f6", "#8b5cf6", "#f59e0b"],
-            borderColor: ["#22d3ee", "#60a5fa", "#a78bfa", "#fbbf24"],
-            borderWidth: 1,
-            borderRadius: 6
-          }
-        ]
+        labels: porSegmento.value.map((item) => item.segmento),
+        datasets: [{
+          label: "Faturamento",
+          data: porSegmento.value.map((item) => item.faturamentoTotal),
+          backgroundColor: ["#06b6d4", "#3b82f6", "#8b5cf6", "#f59e0b", "#10b981", "#ec4899"],
+          borderRadius: 6,
+        }],
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { labels: { color: "#ffffff" } },
-          tooltip: {
-            callbacks: {
-              label: (context) => ` ${formatarMoeda(context.raw)}`
-            }
-          }
-        },
+        ...opcoesComuns(),
         scales: {
-          x: {
-            ticks: { color: "#ffffff" },
-            grid: { color: "rgba(255,255,255,0.08)" }
-          },
-          y: {
-            ticks: {
-              color: "#ffffff",
-              callback: (value) => formatarMoeda(value)
-            },
-            grid: { color: "rgba(255,255,255,0.08)" }
-          }
-        }
-      }
+          x: { ticks: { color: "#d4d4d8" }, grid: { color: "#ffffff10" } },
+          y: { ticks: { color: "#d4d4d8", callback: (value) => formatarMoeda(value) }, grid: { color: "#ffffff10" } },
+        },
+      },
     })
   }
 
-  /* GRÁFICO DE NÍVEL */
-  if (graficoNivel.value) {
+  if (graficoNivel.value && porNivel.value.length) {
     chartNivel = new Chart(graficoNivel.value, {
       type: "doughnut",
       data: {
-        labels: ["Nível A", "Nível B", "Nível C"],
-        datasets: [
-          {
-            data: [
-              clientesPorNivel.value.A,
-              clientesPorNivel.value.B,
-              clientesPorNivel.value.C
-            ],
-            backgroundColor: ["#06b6d4", "#8b5cf6", "#f59e0b"],
-            borderColor: "#27272a",
-            borderWidth: 3,
-            hoverOffset: 8
-          }
-        ]
+        labels: porNivel.value.map((item) => `Nivel ${item.nivel}`),
+        datasets: [{
+          data: porNivel.value.map((item) => item.clientes),
+          backgroundColor: ["#06b6d4", "#8b5cf6", "#f59e0b"],
+          borderColor: "#27272a",
+          borderWidth: 3,
+        }],
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: "55%",
-        plugins: {
-          legend: {
-            position: "bottom",
-            labels: { color: "#ffffff", padding: 20, font: { size: 14 } }
-          },
-          tooltip: {
-            callbacks: {
-              label: (context) => {
-                const valor = context.raw
-                const total = context.dataset.data.reduce((a, b) => a + b, 0)
-                const percentual = total ? ((valor / total) * 100).toFixed(1) : 0
-                return ` ${context.label}: ${valor} (${percentual}%)`
-              }
-            }
-          }
-        }
-      }
+      options: { ...opcoesComuns(), cutout: "58%" },
     })
   }
 
-  /* GRÁFICO DE CONTRATAÇÕES */
-  if (graficoContratacoes.value) {
+  if (graficoContratacoes.value && porMes.value.length) {
     chartContratacoes = new Chart(graficoContratacoes.value, {
       type: "line",
       data: {
-        labels: Object.keys(contratacoesPorMes.value),
-        datasets: [
-          {
-            label: "Contratações",
-            data: Object.values(contratacoesPorMes.value),
-            borderColor: "#22d3ee",
-            backgroundColor: "rgba(34, 211, 238, 0.15)",
-            borderWidth: 3,
-            tension: 0.3,
-            fill: true,
-            pointRadius: 5,
-            pointHoverRadius: 8,
-            pointBackgroundColor: "#22d3ee",
-            pointBorderColor: "#ffffff",
-            pointBorderWidth: 2
-          }
-        ]
+        labels: porMes.value.map((item) => item.mes),
+        datasets: [{
+          label: "Clientes contratados",
+          data: porMes.value.map((item) => item.clientes),
+          borderColor: "#22d3ee",
+          backgroundColor: "rgba(34, 211, 238, 0.15)",
+          borderWidth: 3,
+          tension: 0.3,
+          fill: true,
+          pointRadius: 4,
+        }],
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { labels: { color: "#ffffff" } },
-          tooltip: {
-            callbacks: {
-              label: (context) => ` ${context.raw} contratações`
-            }
-          }
-        },
+        ...opcoesComuns(),
         scales: {
-          x: {
-            ticks: { color: "#ffffff" },
-            grid: { color: "rgba(255,255,255,0.08)" }
-          },
-          y: {
-            beginAtZero: true,
-            ticks: { color: "#ffffff", precision: 0 },
-            grid: { color: "rgba(255,255,255,0.08)" }
-          }
-        }
-      }
+          x: { ticks: { color: "#d4d4d8" }, grid: { color: "#ffffff10" } },
+          y: { beginAtZero: true, ticks: { color: "#d4d4d8", precision: 0 }, grid: { color: "#ffffff10" } },
+        },
+      },
     })
   }
 }
 
-/* ============================== */
-/* CICLO DE VIDA */
-/* ============================== */
-
-onMounted(() => {
-  buscarDadosDoBackend()
-})
-
-onBeforeUnmount(() => {
-  destruirGraficos()
-})
+onMounted(carregarDashboard)
+onBeforeUnmount(destruirGraficos)
 </script>

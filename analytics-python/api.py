@@ -10,7 +10,7 @@ from pydantic import BaseModel, Field
 import config  # carrega o .env
 from analise import calcular
 from limpeza import tratar
-from main import processar_lote
+from main import obter_dashboard, processar_lote
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 log = logging.getLogger("analytics")
@@ -67,6 +67,26 @@ def etl(
         raise HTTPException(
             status_code=500,
             detail="Falha no ETL. Confira o log do serviço Python.",
+        ) from erro
+
+
+@app.get("/dashboard")
+def dashboard(
+    x_etl_key: str | None = Header(default=None),
+) -> dict:
+    chave = os.getenv("ETL_API_KEY", "").strip()
+    if chave and x_etl_key != chave:
+        raise HTTPException(status_code=401, detail="Chave do ETL inválida.")
+
+    try:
+        return obter_dashboard(_engine_azure())
+    except ValueError as erro:
+        raise HTTPException(status_code=422, detail=str(erro)) from erro
+    except Exception as erro:
+        log.exception("Falha ao gerar dashboard")
+        raise HTTPException(
+            status_code=500,
+            detail="Falha ao gerar o dashboard. Confira o log do serviço Python.",
         ) from erro
 
 

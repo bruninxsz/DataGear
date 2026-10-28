@@ -83,6 +83,8 @@ export const useUploadStore = defineStore("upload", {
       this.erro = "";
       this.dadosOriginais = [];
       this.dadosTratados = [];
+      this.erros = [];
+      this.validacaoRealizada = false;
 
       if (!file) {
         this.arquivo = null;
@@ -109,12 +111,14 @@ export const useUploadStore = defineStore("upload", {
 
       this.processando = true;
       this.erro = "";
+      this.validacaoRealizada = false;
 
       try {
         const buffer = await this.arquivo.arrayBuffer();
 
         const workbook = XLSX.read(buffer, {
           type: "array",
+          cellDates: true,
         });
 
         const nomeAba = workbook.SheetNames.includes("upload_clientes")
@@ -351,28 +355,22 @@ export const useUploadStore = defineStore("upload", {
         return;
       }
 
-      if (this.erros.length > 0) {
-        this.erro = `Importação cancelada: ${this.erros.length} erro(s) encontrado(s).`;
-        return;
-      }
 
       this.processando = true;
       this.erro = "";
 
       try {
-        // Mapeia todos os campos exatamente como o ClienteDTO Java exige
+        // Envia os valores originais para que o ETL faca a validacao definitiva.
         const clientes = this.dadosTratados.map((linha) => ({
           codigo_cliente: String(linha.codigo_cliente || "").trim(),
           nome_cliente: String(linha.nome_cliente || "").trim(),
           consultor: String(linha.consultor || "").trim(),
           segmento: String(linha.segmento || "").trim(),
           nivel_cliente: String(linha.nivel_cliente || "").toUpperCase(),
-          faturamento_anual: this.limparFaturamento(linha.faturamento_anual),
+          faturamento_anual: linha.faturamento_anual,
           servicos_contratados: String(linha.servicos_contratados || "").trim(),
-          status: String(linha.status || "").trim().toUpperCase(),
-          data_contratacao: linha.data_contratacao
-            ? new Date(linha.data_contratacao).toISOString().split("T")[0]
-            : null,
+          status: String(linha.status || "").trim(),
+          data_contratacao: linha.data_contratacao || null,
           cidade: linha.cidade ? String(linha.cidade).trim() : null,
           uf: linha.uf ? String(linha.uf).trim().toUpperCase() : null,
         }));
@@ -383,12 +381,23 @@ export const useUploadStore = defineStore("upload", {
           },
         });
 
+        const qualidade = resposta.data?.resultado?.qualidade;
+        if (qualidade?.rejeitadas) {
+          this.erros = qualidade.rejeitadas.map((linha) => ({
+            linha: linha.linha,
+            campo: linha.codigo_cliente || linha.nome_cliente || "linha",
+            tipo: "Rejeitada pelo ETL Python",
+            descricao: linha.motivo,
+          }));
+        }
+
         console.log("Importação concluída:", resposta.data);
         return resposta.data;
       } catch (error) {
         console.error("Erro ao importar clientes:", error);
 
         this.erro =
+          error.response?.data?.detail ||
           error.response?.data?.message ||
           "Não foi possível importar os clientes.";
 

@@ -70,10 +70,16 @@
             </span>
           </div>
 
-          <p v-if="totalErros > 0" class="text-xs text-zinc-400 mt-4">
+          <p v-if="totalErros > 0 && !sucessoImportacao" class="text-xs text-zinc-400 mt-4">
             <br>
             Dados não enviados ao banco.<br>
             Consulte os detalhes abaixo para visualizar a lista completa de erros.
+          </p>
+          <p v-if="totalErros > 0 && sucessoImportacao && linhasValidas > 0" class="text-xs text-amber-300 mt-4">
+            O Python salvou as linhas validas. As linhas recusadas aparecem abaixo.
+          </p>
+          <p v-if="totalErros > 0 && sucessoImportacao && linhasValidas === 0" class="text-xs text-amber-300 mt-4">
+            O Python nao encontrou linhas validas para salvar. Consulte os motivos abaixo.
           </p>
           <p v-if="totalErros === 0 && sucessoImportacao" class="text-xs text-green-400/70 mt-4">
             Dados enviados ao banco.
@@ -252,13 +258,8 @@ async function processarEImportar() {
   try {
     // 1. Executa a leitura e validação
     await uploadStore.processarArquivo()
-
-    // 2. Se houver erros na planilha, encerra para exibir o relatório de erros
-    if (uploadStore.totalErros > 0) {
-      return
-    }
-
-    // 3. Se a planilha estiver 100% limpa, importa no banco de dados
+    if (!uploadStore.validacaoRealizada) return
+    // O Python valida cada linha, grava as validas e devolve os motivos das rejeitadas.
     importando.value = true
     await uploadStore.enviarDadosValidos()
 
@@ -266,13 +267,13 @@ async function processarEImportar() {
   } catch (erroOcorrido) {
     console.error('Erro ao processar/importar:', erroOcorrido)
     uploadStore.erro =
+      erroOcorrido.response?.data?.detail ||
       erroOcorrido.response?.data?.message ||
       erroOcorrido.message ||
       'Ocorreu um erro ao processar a planilha.'
     
   } finally {
     importando.value = false
-    sucessoImportacao.value = false
   }
 }
 </script>
