@@ -24,7 +24,8 @@ public class Telemetria {
   @Column (nullable = false)
   private String mensagem_erro;
 
-  @Column (nullable = false)
+  @Enumerated(EnumType.STRING)
+  @Column(name = "status_telemetria", nullable = false, length = 20)
   private Status status_telemetria;
 
   @ManyToOne

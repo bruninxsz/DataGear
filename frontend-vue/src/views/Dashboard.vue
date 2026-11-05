@@ -226,13 +226,15 @@ async function carregarDashboard() {
   try {
     const resposta = await api.get("/api/cliente/dashboard")
     analise.value = resposta.data || {}
-    await nextTick()
-    renderizarGraficos()
   } catch (err) {
     console.error("Erro ao carregar dashboard analitico:", err)
     erro.value = mensagemErro(err)
   } finally {
     carregando.value = false
+    // Os canvases ficam dentro do v-else do estado de carregamento. Aguarde
+    // o Vue montá-los antes de entregar os elementos ao Chart.js.
+    await nextTick()
+    if (!erro.value) renderizarGraficos()
   }
 }
 

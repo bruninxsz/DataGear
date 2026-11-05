@@ -48,10 +48,16 @@
         </p>
 
         <!-- PROCESSAR -->
-        <button type="button" @click="processarEImportar" :disabled="!arquivo || processando || importando"
-          class="w-full md:w-auto cursor-pointer bg-gradient-to-b from-cyan-500 to-sky-200 text-zinc-900 border border-white px-8 py-3 rounded-lg font-medium hover:shadow-md duration-300 shadow-cyan-300 text-sm md:text-lg disabled:opacity-40 disabled:cursor-not-allowed">
-          {{ processando || importando ? 'Processando...' : 'Validar e importar' }}
-        </button>
+        <div class="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row">
+          <button type="button" @click="processarEImportar" :disabled="!arquivo || processando || importando"
+            class="w-full md:w-auto cursor-pointer bg-gradient-to-b from-cyan-500 to-sky-200 text-zinc-900 border border-white px-8 py-3 rounded-lg font-medium hover:shadow-md duration-300 shadow-cyan-300 text-sm md:text-lg disabled:opacity-40 disabled:cursor-not-allowed">
+            {{ processando || importando ? 'Processando...' : 'Validar e importar' }}
+          </button>
+          <a :href="planilhaModelo" download="Planilha_Modelo.xlsx"
+            class="w-full rounded-lg border border-cyan-700 px-6 py-3 text-center text-sm font-medium text-cyan-200 transition hover:border-cyan-400 hover:bg-cyan-950/40 sm:w-auto md:text-base">
+            Baixar planilha modelo
+          </a>
+        </div>
 
         <!-- RESULTADO SINTÉTICO DO PROCESSAMENTO -->
         <div v-if="validacaoRealizada"
@@ -222,6 +228,7 @@ import { storeToRefs } from 'pinia'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import { useUploadStore } from '../stores/uploadStore'
+import planilhaModelo from '../assets/planilha_modelo.xlsx?url'
 
 const uploadStore = useUploadStore()
 
