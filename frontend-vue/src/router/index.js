@@ -40,7 +40,10 @@ const routes = [
         name: 'dashboard',
         component: Dashboard,
         meta: { requiresAuth: true }
-    }
+    },
+    
+    // Rota de captura global: redireciona qualquer URL não mapeada para a Home
+    { path: '/:pathMatch(.*)*', redirect: '/' }
 ]
 
 const router = createRouter({
