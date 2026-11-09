@@ -1,54 +1,101 @@
-# 🚀 DataGear CTI
+# DataGear CTI
 
-> Sistema web inteligente para higienização de dados, análise de carteira e geração de insights estratégicos a partir de planilhas operacionais da CTI Comunicação de Dados e Tecnologia LTDA.
+**Transforme planilhas operacionais em uma visão clara da carteira de clientes.**
 
----
+O DataGear CTI é uma aplicação web para importar, higienizar e analisar dados de clientes. A solução reúne uma interface em Vue, uma API Java, um serviço analítico em Python e persistência em PostgreSQL. Após a importação, o dashboard consulta os clientes salvos e apresenta indicadores, gráficos e insights calculados sobre esses dados.
 
-## 📌 Sobre o Projeto
+## Visão geral
 
-A **Provedor CTI** mantinha sua base de clientes centralizada em planilhas Excel gerenciadas manualmente. Esse modelo gerava gargalos como inconsistências de digitação (ex: *"IND."*, *"Industria"*, *"INDUSTRIA"* para o mesmo segmento), campos em branco e falta de visibilidade sobre o perfil da carteira.
+```text
+Planilha XLSX / XLS / CSV
+          │
+          ▼
+Frontend Vue ──► API Spring Boot ──► API FastAPI / ETL Python ──► PostgreSQL
+     ▲                                      │                         │
+     └──────── Dashboard ◄─────────────────┴──── consulta e análise ─┘
+```
 
-O **DataGear CTI** foi desenvolvido para resolver esse problema, transformando arquivos brutos `.xlsx`/`.csv` em um ecossistema web moderno. O sistema realiza o tratamento automático dos dados (ETL) e apresenta métricas estratégicas em tempo real através de dashboards interativos.
+O Java recebe as requisições da aplicação e integra o frontend ao serviço analítico. O Python padroniza e valida as linhas, grava clientes novos ou atualizados no PostgreSQL e calcula os dados exibidos no dashboard. A API Python também oferece documentação interativa em `/docs`.
 
----
+## O que o sistema oferece
 
-## ✨ Funcionalidades Principais
+### Importação e qualidade dos dados
 
-* 🧹 **Higienização Automática de Dados (ETL):** Padronização de textos, remoção de acentuação/caixa mista e tratamento de duplicidades na importação.
-* 📊 **Dashboards Dinâmicos:** Visualização instantânea de métricas e gráficos sobre a base de clientes:
-  * Concentração por segmento de atuação (Indústria, Comércio, Serviços).
-  * Distribuição da carteira por nível de cliente (A, B e C).
-  * Serviços mais contratados e adesão de pacotes.
-  * Performance e distribuição da carteira por consultor.
-* 🔍 **Filtros Avançados:** Segmentação de dados por faixa de faturamento, consultor, nível ou serviço contratado.
-* 📝 **Gestão de Clientes (CRUD):** Interface para cadastro e edição manual com campos padronizados para evitar novas inconsistências.
-* 📄 **Exportação de Relatórios:** Geração de relatórios consolidados para reuniões e tomadas de decisão.
+- Leitura de planilhas `.xlsx`, `.xls` e `.csv` no navegador.
+- Prévia dos registros e validação de campos obrigatórios antes do envio.
+- Relatório de problemas encontrados, incluindo linhas rejeitadas pelo ETL.
+- Padronização de nomes, consultores, segmentos, níveis, status, serviços, faturamento e datas.
+- Identificação de códigos duplicados durante o processamento.
+- Download da planilha modelo diretamente na tela de upload.
+- Persistência por código do cliente: registros existentes são atualizados e novos registros são inseridos.
 
----
+### Dashboard analítico
 
-## 🛠️ Tecnologias Utilizadas
+Os indicadores são calculados a partir dos clientes consultados no banco de dados:
 
-**Front-end:**
-* **Vue.js 3** (Composition API)
-* **Tailwind CSS** (Estilização responsiva e UI tecnológica)
-* **Vue Router** (Navegação SPA)
+- Total de clientes, faturamento total e médio e serviço mais contratado.
+- Gráficos de faturamento por segmento, clientes por nível e contratações por mês.
+- Resumo estatístico com mediana, desvio padrão, quartis, valores mínimo e máximo.
+- Insights sobre a carteira, serviços, consultores e evolução das contratações.
+- Lista dos cinco clientes com maior faturamento anual.
+- Data de geração da análise e ação para atualizar os dados.
 
-**Back-end & Banco de Dados (Sugerido/Implementado):**
-* **Node.js / Python** (Módulo de tratamento de dados e API REST)
-* **PostgreSQL / MySQL** (Armazenamento relacional dos dados higienizados)
+### Gestão e acesso
 
----
+- Interface de login e cadastro.
+- Área de clientes com listagem e ação para encerrar um cliente.
+- Rotas de upload, clientes e dashboard protegidas pela verificação de sessão da aplicação.
 
-## 🚀 Como Executar o Projeto
+## Tecnologias
 
-### Pré-requisitos
+| Camada | Tecnologias |
+|---|---|
+| Frontend | Vue 3, Vue Router, Pinia, Vite, Tailwind CSS, Axios, Chart.js e SheetJS |
+| API da aplicação | Java 17, Spring Boot, Spring Web MVC, Spring Data JPA, Bean Validation e Spring Security |
+| ETL e analytics | Python, FastAPI, pandas, NumPy, SciPy e SQLAlchemy |
+| Banco de dados | PostgreSQL |
 
-Antes de começar, você precisará ter instalado em sua máquina:
-* [Node.js](https://nodejs.org/) (versão 18 ou superior)
-* [Git](https://git-scm.com/)
+## Estrutura do projeto
 
-### Passo a Passo
+```text
+frontend-vue/   Interface web e dashboard
+backend-java/   API REST, persistência JPA e integração com o serviço Python
+analytics-python/ ETL, análise estatística e acesso ao PostgreSQL
+```
 
-1. **Clone o repositório:**
-   ```bash
-   git clone [https://github.com/seu-usuario/datagear-cti.git](https://github.com/seu-usuario/datagear-cti.git)
+## Arquitetura e deploy
+
+A aplicação é organizada em três componentes integrados: frontend Vue, API Java e serviço analítico Python, com PostgreSQL como repositório relacional. Essa separação permite publicar cada componente em um ambiente compatível com sua tecnologia e manter a comunicação entre eles por APIs HTTP.
+
+No deploy, o frontend deve apontar para a API Java; a API Java encaminha importações e consultas analíticas ao serviço Python; e o serviço Python acessa o PostgreSQL. Endereços de serviços, credenciais e demais dados específicos do ambiente de produção pertencem à configuração segura da plataforma de hospedagem e não devem ser registrados neste README nem versionados junto ao código.
+
+O projeto inclui `npm run build` para gerar os arquivos de produção do frontend e o Maven Wrapper (`mvnw` / `mvnw.cmd`) para o backend Java. O serviço Python é uma API FastAPI e possui dependências declaradas em `analytics-python/requirements.txt`.
+
+## Fluxo de dados
+
+1. O usuário seleciona a planilha, confere a prévia e inicia a validação/importação.
+2. O frontend envia os registros para `POST /api/cliente/importar` no backend Java.
+3. O Java encaminha o lote ao `POST /etl` do serviço Python.
+4. O ETL padroniza e valida as linhas e grava os clientes válidos no PostgreSQL. O retorno inclui o resumo de qualidade e as linhas rejeitadas.
+5. O dashboard solicita `GET /api/cliente/dashboard`; o Java consulta o serviço Python, que lê os clientes persistidos e calcula os indicadores e gráficos.
+
+## Endpoints principais
+
+| Serviço | Endpoint | Uso |
+|---|---|---|
+| Java | `POST /api/cliente/importar` | Encaminha registros para processamento e gravação pelo ETL |
+| Java | `GET /api/cliente/dashboard` | Retorna indicadores e séries para o dashboard |
+| Java | `GET /api/cliente/listar` | Lista clientes |
+| Java | `PATCH /api/cliente/{id}/encerrar` | Encerra um cliente |
+| Python | `GET /saude` | Verifica se a API está ativa |
+| Python | `POST /etl` | Processa e persiste um lote de clientes |
+| Python | `GET /dashboard` | Lê os clientes salvos e calcula a análise |
+| Python | `POST /testar` | Executa limpeza e análise sem persistir no banco |
+
+## Observações sobre os dados
+
+- O ETL usa `codigo_cliente` como chave lógica para atualizar ou inserir clientes.
+- O dashboard é recalculado com base nos registros persistidos no PostgreSQL.
+- A importação não cria registros na tabela `contrato`: a planilha modelo não fornece valor, data final e status necessários para formar um contrato real.
+- A API Java está configurada com `spring.jpa.hibernate.ddl-auto=validate`; o Hibernate valida o mapeamento em relação ao schema existente, sem criá-lo ou alterá-lo automaticamente.
+
