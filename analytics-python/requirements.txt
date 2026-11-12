@@ -6,3 +6,4 @@ scipy
 SQLAlchemy
 psycopg[binary]
 python-dotenv
+gunicorn
