@@ -249,8 +249,9 @@
 import { ref, computed, onMounted } from 'vue'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
+import api from '@/services/api'
 
-const API_URL = 'http://localhost:8080/api/cliente/listar'
+const API_URL = '/api/cliente/listar'
 
 const clientes = ref([])
 const busca = ref('')
@@ -370,15 +371,9 @@ async function buscarClientes() {
   erro.value = ''
 
   try {
-    const resposta = await fetch(API_URL)
+    const resposta = await api.get(API_URL)
 
-    if (!resposta.ok) {
-      throw new Error(
-        `Erro ao consultar clientes: HTTP ${resposta.status}`,
-      )
-    }
-
-    const dados = await resposta.json()
+    const dados = resposta.data
 
     // Suporta uma lista direta ou respostas paginadas.
     clientes.value = Array.isArray(dados)
@@ -408,18 +403,7 @@ async function deletarBase() {
   if (!confirmacao) return
 
   try {
-    const resposta = await fetch(
-      'http://localhost:8080/api/cliente/deletar',
-      {
-        method: 'DELETE',
-      },
-    )
-
-    if (!resposta.ok) {
-      throw new Error(
-        `Erro ao deletar base de clientes: HTTP ${resposta.status}`,
-      )
-    }
+    await api.delete('/api/cliente/deletar')
 
     alert('Base de clientes deletada com sucesso.')
     buscarClientes()

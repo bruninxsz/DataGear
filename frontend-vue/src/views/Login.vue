@@ -19,8 +19,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
 import { useRouter } from 'vue-router';
+import api from '@/services/api';
 
 const email = ref('');
 const senha = ref('');
@@ -29,7 +29,7 @@ async function formSubmit() {
 
 
   try {
-    const response = await axios.post('http://localhost:8080/api/auth/login', {
+    const response = await api.post('/api/auth/login', {
       email: email.value,
       senha: senha.value
     })
