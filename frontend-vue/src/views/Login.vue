@@ -41,7 +41,7 @@ async function formSubmit() {
     router.push('/upload');
 
   } catch (error) {
-    
+
     console.error('Erro ao fazer login:', error);
 
     if (error.response?.status === 401) {

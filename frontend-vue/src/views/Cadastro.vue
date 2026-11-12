@@ -4,14 +4,14 @@
       class="flex flex-col items-center gap-8 m-auto bg-zinc-900 shadow-md shadow-cyan-300 p-4 min-w-sm md:min-w-xl lg:min-w-2xl text-cyan-100 rounded-4xl">
       <h2 class="text-cyan-200 text-2xl mt-8 font-bold mb-4">Faça seu Cadastro</h2>
       <input type="text" v-model="nome"
-      class="border border-cyan-200 rounded-lg w-70 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base"
-      placeholder="Digite o seu nome:"> 
+        class="border border-cyan-200 rounded-lg w-70 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base"
+        placeholder="Digite o seu nome:">
       <input type="tel" v-model="telefone"
-      class="border border-cyan-200 rounded-lg w-70 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base"
-      placeholder="Digite o seu telefone:">
+        class="border border-cyan-200 rounded-lg w-70 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base"
+        placeholder="Digite o seu telefone:">
       <input type="email" v-model="email"
-      class="border border-cyan-200 rounded-lg w-70 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base"
-      placeholder="Digite o seu e-mail:">
+        class="border border-cyan-200 rounded-lg w-70 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base"
+        placeholder="Digite o seu e-mail:">
       <input type="password" v-model="senha"
         class="border border-cyan-200 rounded-lg w-70 md:w-90 lg:w-md py-3 px-2 text-sm lg:text-base"
         placeholder="Digite a sua senha:">
@@ -25,7 +25,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter }from 'vue-router'
+import { useRouter } from 'vue-router'
 import api from '@/services/api'
 
 const router = useRouter()

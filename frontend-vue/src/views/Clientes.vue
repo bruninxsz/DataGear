@@ -199,18 +199,18 @@
 
                   <td class="px-5 py-4">
                     <span class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium" :class="cliente.status === 'ATIVO'
-                        ? 'bg-emerald-500/10 text-emerald-400'
-                        : 'bg-red-500/10 text-red-400'
+                      ? 'bg-emerald-500/10 text-emerald-400'
+                      : 'bg-red-500/10 text-red-400'
                       ">
                       <span class="w-1.5 h-1.5 rounded-full" :class="cliente.status === 'ATIVO'
-                          ? 'bg-emerald-400'
-                          : 'bg-red-400'
+                        ? 'bg-emerald-400'
+                        : 'bg-red-400'
                         "></span>
                       {{ cliente.status || '—' }}
                     </span>
                   </td>
 
-                  
+
 
                   <td class="px-5 py-4 text-zinc-300">
                     <div class="flex flex-wrap gap-1 max-w-xs">
