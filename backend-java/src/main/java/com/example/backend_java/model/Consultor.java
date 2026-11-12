@@ -2,7 +2,10 @@ package com.example.backend_java.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
+
 @Entity
 @Table(name = "consultor")
 public class Consultor {
@@ -20,64 +23,54 @@ public class Consultor {
     @Column(nullable = false, length = 15)
     private String telefone;
 
-    @Column(nullable=false, length = 255)
+    @Column(nullable = false, length = 255)
     private String senha;
 
-    @OneToMany (mappedBy = "consultor")
-    private List<Cliente> clientes;
-    
-    @OneToMany (mappedBy = "consultor")
+    @JsonIgnore
+    @OneToMany(mappedBy = "consultor")
     private List<Telemetria> telemetrias;
 
-    public Consultor(){ 
+    public Consultor() {
     }
 
-    public Long getId(){
+    public Long getId() {
         return id_consultor;
     }
 
-    public String getNome(){
+    public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome){
+    public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email){
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getTelefone(){
+    public String getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(String telefone){
+    public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
 
-    public String getSenha(){
+    public String getSenha() {
         return senha;
     }
 
-    public void setSenha(String senha){
+    public void setSenha(String senha) {
         this.senha = senha;
     }
 
-    public List<Cliente> getClientes(){
-      return clientes;
-    }
-
-    public void setClientes(List<Cliente> clientes) {
-        this.clientes = clientes;
-    }
-
-    public List<Telemetria> getTelemetrias(){
-      return telemetrias;
+    public List<Telemetria> getTelemetrias() {
+        return telemetrias;
     }
 
     public void setTelemetrias(List<Telemetria> telemetrias) {

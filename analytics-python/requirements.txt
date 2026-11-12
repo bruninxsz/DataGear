@@ -7,3 +7,6 @@ SQLAlchemy
 psycopg[binary]
 python-dotenv
 gunicorn
+pydantic
+sqlalchemy
+psycopg2-binary
