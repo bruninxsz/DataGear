@@ -12,7 +12,7 @@ import com.example.backend_java.repository.ConsultorRepository;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"https://datagear.vercel.app"})
 public class AuthController {
 
     private final ConsultorRepository consultorRepository;
