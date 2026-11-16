@@ -2,7 +2,7 @@ package com.example.backend_java.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer; 
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +24,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(Customizer.withDefaults()) // Agora o Customizer funcionará normalmente
+            .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()
@@ -38,10 +38,11 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(
+            "https://datagear.vercel.app",
             "http://localhost:5173",
             "http://localhost:8080",
-            "analytics-python-production.up.railway.app",
-            "backend-java-production-5e455b77.up.railway.app"
+            "https://analytics-python-production.up.railway.app",
+            "https://backend-java-production-5e455b77.up.railway.app"
         ));
 
         configuration.setAllowedMethods(List.of(
@@ -49,11 +50,12 @@ public class SecurityConfig {
             "POST",
             "PUT",
             "DELETE",
-            "OPTIONS"
+            "OPTIONS",
+            "PATCH"
         ));
 
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true); // Opcional: útil se for enviar cookies/tokens na requisição
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
