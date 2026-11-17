@@ -205,6 +205,10 @@ function formatarData(valor) {
 }
 
 function mensagemErro(err) {
+  if (err.response?.status === 422) {
+    return "Ainda não há dados válidos para exibir. Importe uma planilha com clientes válidos para gerar o dashboard."
+  }
+
   const detalhe = err.response?.data?.detail || err.response?.data?.message
   if (typeof detalhe === "string") {
     try {
