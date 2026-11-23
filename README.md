@@ -1,101 +1,176 @@
-# DataGear CTI
+![SENAI](https://img.shields.io/badge/SENAI-An%C3%A1lise%20e%20Desenvolvimento%20de%20Sistemas-blue?style=for-the-badge)
+![Semestre](https://img.shields.io/badge/Per%C3%ADodo-2%C2%BA%20Semestre%2F2026-informational?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow?style=for-the-badge)
 
-**Transforme planilhas operacionais em uma visão clara da carteira de clientes.**
+**Projeto Integrador** desenvolvido no 2º semestre de 2026 para o curso de **Análise e Desenvolvimento de Sistemas (ADS)** do **SENAI**, baseado na Situação de Aprendizagem proposta pela empresa **Provedor CTI**.
 
-O DataGear CTI é uma aplicação web para importar, higienizar e analisar dados de clientes. A solução reúne uma interface em Vue, uma API Java, um serviço analítico em Python e persistência em PostgreSQL. Após a importação, o dashboard consulta os clientes salvos e apresenta indicadores, gráficos e insights calculados sobre esses dados.
+O **DataGear CTI** é uma aplicação web para importar, organizar e analisar dados da carteira de clientes. O usuário cadastra-se ou entra no sistema, importa uma planilha comercial, confere os dados e acompanha os indicadores no dashboard.
 
-## Visão geral
+| Serviço | Endereço |
+|---|---|
+| Aplicação web (front-end) | [https://datagear.vercel.app](https://datagear.vercel.app) |
+| API Java (back-end) | [https://backend-java-production-5e455b77.up.railway.app](https://backend-java-production-5e455b77.up.railway.app) |
+| API de analytics (Python) | [https://analytics-python-production.up.railway.app](https://analytics-python-production.up.railway.app) |
+| Saúde da API Python | [GET /saude](https://analytics-python-production.up.railway.app/saude) |
 
-```text
-Planilha XLSX / XLS / CSV
-          │
-          ▼
-Frontend Vue ──► API Spring Boot ──► API FastAPI / ETL Python ──► PostgreSQL
-     ▲                                      │                         │
-     └──────── Dashboard ◄─────────────────┴──── consulta e análise ─┘
-```
+---
 
-O Java recebe as requisições da aplicação e integra o frontend ao serviço analítico. O Python padroniza e valida as linhas, grava clientes novos ou atualizados no PostgreSQL e calcula os dados exibidos no dashboard. A API Python também oferece documentação interativa em `/docs`.
+## Unidades Curriculares Integradas
 
-## O que o sistema oferece
+O projeto integra conhecimentos das seguintes áreas:
 
-### Importação e qualidade dos dados
+- **Frameworks Front-end:** desenvolvimento da interface e navegação da aplicação.
+- **Desenvolvimento Back-end:** criação de APIs, regras de negócio e integração com banco de dados.
+- **Ciência de Dados:** limpeza, transformação e análise estatística dos dados.
+- **Automação Industrial:** integração de dados e conceitos de monitoramento, conforme os requisitos do projeto.
+- **Computação em Nuvem:** publicação e comunicação dos serviços hospedados.
+- **Relações Humanas e Cidadania:** atenção à usabilidade, acessibilidade e tratamento responsável dos dados.
 
-- Leitura de planilhas `.xlsx`, `.xls` e `.csv` no navegador.
-- Prévia dos registros e validação de campos obrigatórios antes do envio.
-- Relatório de problemas encontrados, incluindo linhas rejeitadas pelo ETL.
-- Padronização de nomes, consultores, segmentos, níveis, status, serviços, faturamento e datas.
-- Identificação de códigos duplicados durante o processamento.
-- Download da planilha modelo diretamente na tela de upload.
-- Persistência por código do cliente: registros existentes são atualizados e novos registros são inseridos.
+## Funcionalidades
 
-### Dashboard analítico
+**Acesso e cadastro**
 
-Os indicadores são calculados a partir dos clientes consultados no banco de dados:
+- Criar cadastro de consultor com nome, e-mail, telefone e senha.
+- Entrar com e-mail e senha.
 
-- Total de clientes, faturamento total e médio e serviço mais contratado.
-- Gráficos de faturamento por segmento, clientes por nível e contratações por mês.
-- Resumo estatístico com mediana, desvio padrão, quartis, valores mínimo e máximo.
-- Insights sobre a carteira, serviços, consultores e evolução das contratações.
-- Lista dos cinco clientes com maior faturamento anual.
-- Data de geração da análise e ação para atualizar os dados.
+**Clientes e planilhas**
 
-### Gestão e acesso
+- Consultar clientes, pesquisar por texto e filtrar por segmento e status.
+- Importar arquivos `.xlsx`, `.xls` e `.csv`.
+- Conferir campos obrigatórios, códigos duplicados, nível, UF, faturamento e segmento antes do envio.
+- Exibir erros de validação e encaminhar os registros para o processamento Python.
+- Atualizar clientes existentes ou inserir novos, usando o código do cliente como chave lógica.
+- Encerrar um cliente.
 
-- Interface de login e cadastro.
-- Área de clientes com listagem e ação para encerrar um cliente.
-- Rotas de upload, clientes e dashboard protegidas pela verificação de sessão da aplicação.
+**Dashboard**
+
+- Consultar total de clientes, faturamento total e médio e serviço mais contratado.
+- Visualizar faturamento por segmento, clientes por nível e contratações por mês.
+- Consultar medidas estatísticas, os cinco maiores clientes e insights gerados a partir dos dados.
 
 ## Tecnologias
 
-| Camada | Tecnologias |
+| Camada | Tecnologias principais |
 |---|---|
-| Frontend | Vue 3, Vue Router, Pinia, Vite, Tailwind CSS, Axios, Chart.js e SheetJS |
-| API da aplicação | Java 17, Spring Boot, Spring Web MVC, Spring Data JPA, Bean Validation e Spring Security |
-| ETL e analytics | Python, FastAPI, pandas, NumPy, SciPy e SQLAlchemy |
+| Front-end | Vue 3, Vite, Vue Router, Pinia, Tailwind CSS, Axios, Chart.js, SheetJS (`xlsx`) e AOS |
+| Back-end | Java 17, Spring Boot 4.1.1, Spring Web MVC, Spring Data JPA, Spring Security e Bean Validation |
+| Ciência de dados | Python, FastAPI, Uvicorn, pandas, NumPy, SciPy e SQLAlchemy |
 | Banco de dados | PostgreSQL |
-
-## Estrutura do projeto
-
-```text
-frontend-vue/   Interface web e dashboard
-backend-java/   API REST, persistência JPA e integração com o serviço Python
-analytics-python/ ETL, análise estatística e acesso ao PostgreSQL
-```
-
-## Arquitetura e deploy
-
-A aplicação é organizada em três componentes integrados: frontend Vue, API Java e serviço analítico Python, com PostgreSQL como repositório relacional. Essa separação permite publicar cada componente em um ambiente compatível com sua tecnologia e manter a comunicação entre eles por APIs HTTP.
-
-No deploy, o frontend deve apontar para a API Java; a API Java encaminha importações e consultas analíticas ao serviço Python; e o serviço Python acessa o PostgreSQL. Endereços de serviços, credenciais e demais dados específicos do ambiente de produção pertencem à configuração segura da plataforma de hospedagem e não devem ser registrados neste README nem versionados junto ao código.
-
-O projeto inclui `npm run build` para gerar os arquivos de produção do frontend e o Maven Wrapper (`mvnw` / `mvnw.cmd`) para o backend Java. O serviço Python é uma API FastAPI e possui dependências declaradas em `analytics-python/requirements.txt`.
+| Hospedagem | Vercel (front-end) e Railway (APIs) |
 
 ## Fluxo de dados
 
-1. O usuário seleciona a planilha, confere a prévia e inicia a validação/importação.
-2. O frontend envia os registros para `POST /api/cliente/importar` no backend Java.
-3. O Java encaminha o lote ao `POST /etl` do serviço Python.
-4. O ETL padroniza e valida as linhas e grava os clientes válidos no PostgreSQL. O retorno inclui o resumo de qualidade e as linhas rejeitadas.
-5. O dashboard solicita `GET /api/cliente/dashboard`; o Java consulta o serviço Python, que lê os clientes persistidos e calcula os indicadores e gráficos.
+```mermaid
+flowchart TD
+    U[Usuário] --> F[Front-end Vue]
+    F -->|Importação e consultas| J[API Java / Spring Boot]
+    J -->|POST /etl e GET /dashboard| P[API Python / FastAPI]
+    J --> DB[(PostgreSQL)]
+    P -->|Leitura e gravação analítica| DB
+    P -->|Indicadores e insights| J
+    J --> F
+```
 
-## Endpoints principais
+1. O usuário seleciona uma planilha no front-end.
+2. O navegador lê e valida os dados e mostra os problemas encontrados.
+3. O front-end envia os registros para `POST /api/cliente/importar` na API Java.
+4. A API Java encaminha a importação para `POST /etl` no serviço Python.
+5. O Python trata os dados, grava clientes e insights no PostgreSQL e calcula os indicadores.
+6. O dashboard solicita os dados à API Java, que consulta o serviço Python.
 
-| Serviço | Endpoint | Uso |
-|---|---|---|
-| Java | `POST /api/cliente/importar` | Encaminha registros para processamento e gravação pelo ETL |
-| Java | `GET /api/cliente/dashboard` | Retorna indicadores e séries para o dashboard |
-| Java | `GET /api/cliente/listar` | Lista clientes |
-| Java | `PATCH /api/cliente/{id}/encerrar` | Encerra um cliente |
-| Python | `GET /saude` | Verifica se a API está ativa |
-| Python | `POST /etl` | Processa e persiste um lote de clientes |
-| Python | `GET /dashboard` | Lê os clientes salvos e calcula a análise |
-| Python | `POST /testar` | Executa limpeza e análise sem persistir no banco |
+## Banco de dados
 
-## Observações sobre os dados
+O sistema utiliza PostgreSQL. O back-end Java mapeia entidades como `cliente`, `consultor`, `contrato`, `servico`, `insight` e `telemetria`. O serviço Python acessa a tabela `public.cliente` para gravar e consultar clientes e registra os insights produzidos pelo processamento.
 
-- O ETL usa `codigo_cliente` como chave lógica para atualizar ou inserir clientes.
-- O dashboard é recalculado com base nos registros persistidos no PostgreSQL.
-- A importação não cria registros na tabela `contrato`: a planilha modelo não fornece valor, data final e status necessários para formar um contrato real.
-- A API Java está configurada com `spring.jpa.hibernate.ddl-auto=validate`; o Hibernate valida o mapeamento em relação ao schema existente, sem criá-lo ou alterá-lo automaticamente.
+O ETL usa `codigo_cliente` como chave lógica para inserir ou atualizar clientes. A importação atual não cria contratos: os dados fornecidos pela planilha não contêm todos os campos necessários para formar um contrato.
 
+O Hibernate está configurado com `spring.jpa.hibernate.ddl-auto=validate`, portanto o schema PostgreSQL deve existir e ser compatível com as entidades antes de iniciar o back-end.
+
+## Estrutura do repositório
+
+```text
+frontend-vue/       Aplicação Vue e dashboard
+backend-java/       API REST, entidades JPA e integração com analytics
+analytics-python/   API FastAPI, ETL, análise e acesso ao PostgreSQL
+```
+
+## Como executar
+
+**Pré-requisitos:** Node.js 22.18+ (ou 24.12+), Java 17, Python 3.10+ e acesso a um PostgreSQL com o schema esperado pela aplicação.
+
+Configure as variáveis de ambiente e inicie os serviços nesta ordem.
+
+### 1. Python (porta 8000)
+
+```powershell
+cd analytics-python
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python -m uvicorn api:app --reload --port 8000
+```
+
+No Linux/macOS, ative o ambiente com `source .venv/bin/activate`.
+
+### 2. Back-end Java (porta 8080)
+
+```powershell
+cd backend-java
+.\mvnw.cmd spring-boot:run
+```
+
+No Linux/macOS, use `./mvnw spring-boot:run`.
+
+### 3. Front-end (porta 5173)
+
+```powershell
+cd frontend-vue
+npm install
+npm run dev
+```
+
+Acesse o endereço exibido pelo Vite, normalmente `http://localhost:5173`.
+
+### Variáveis de ambiente
+
+| Serviço | Variáveis |
+|---|---|
+| `analytics-python` | `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_NAME`; opcionalmente `DB_PORT`, `DB_SSLMODE`, `ETL_API_KEY` e `LOG_LEVEL` |
+| `backend-java` | `DB_PASSWORD`, `ANALYTICS_PYTHON_URL` e `ETL_API_KEY` |
+| `frontend-vue` | A URL da API está atualmente configurada em `src/services/api.js` |
+
+`ETL_API_KEY`, quando configurada, deve ter o mesmo valor nos serviços Python e Java. Não publique senhas ou chaves no repositório. O JDBC URL e o usuário do banco usados pelo Java estão em `backend-java/src/main/resources/application.properties`.
+
+## API
+
+| Método | Rota | Serviço | Função |
+|---|---|---|---|
+| `POST` | `/api/consultor` | Java | Cadastra consultor |
+| `POST` | `/api/auth/login` | Java | Autentica consultor |
+| `GET` | `/api/cliente/listar` | Java | Lista clientes |
+| `POST` | `/api/cliente/importar` | Java | Encaminha a importação ao ETL |
+| `GET` | `/api/cliente/dashboard` | Java | Retorna dados analíticos para o dashboard |
+| `PATCH` | `/api/cliente/{id}/encerrar` | Java | Encerra um cliente |
+| `GET` | `/saude` | Python | Verifica o serviço |
+| `POST` | `/etl` | Python | Trata, analisa e persiste os dados recebidos |
+| `GET` | `/dashboard` | Python | Calcula análise com os clientes persistidos |
+| `POST` | `/testar` | Python | Testa limpeza e análise sem gravar no banco |
+
+A API FastAPI também disponibiliza documentação interativa em `/docs` e `/redoc`.
+
+## Testes
+
+Os testes automatizados do back-end Java estão em `backend-java/src/test`. O serviço Python inclui `analytics-python/testar_conexao.py` para verificar a conexão com o banco e a rota `POST /testar` para exercitar limpeza e análise sem persistência.
+
+Para gerar o build de produção do front-end:
+
+```bash
+cd frontend-vue
+npm run build
+```
+
+## Documentação
+
+- [Documentação do back-end Java](backend-java/README.md)
+- [Documentação do front-end Vue](frontend-vue/README.md)
+- [Documentação da ciência de dados e ETL](analytics-python/README.md)
