@@ -41,8 +41,8 @@ public class SecurityConfig {
             "https://datagear.vercel.app",
             "http://localhost:5173",
             "http://localhost:8080",
-            "https://analytics-python-production.up.railway.app",
-            "https://backend-java-production-5e455b77.up.railway.app"
+            "https://analytics-datagear.up.railway.app",
+            "https://backend-datagear.up.railway.app"
         ));
 
         configuration.setAllowedMethods(List.of(
