@@ -9,9 +9,9 @@ O **DataGear CTI** é uma aplicação web para importar, organizar e analisar da
 | Serviço | Endereço |
 |---|---|
 | Aplicação web (front-end) | [https://datagear.vercel.app](https://datagear.vercel.app) |
-| API Java (back-end) | [https://backend-java-production-5e455b77.up.railway.app](https://backend-java-production-5e455b77.up.railway.app) |
-| API de analytics (Python) | [https://analytics-python-production.up.railway.app](https://analytics-python-production.up.railway.app) |
-| Saúde da API Python | [GET /saude](https://analytics-python-production.up.railway.app/saude) |
+| API Java (back-end) | [https://backend-datagear.up.railway.app](https://backend-datagear.up.railway.app) |
+| API de analytics (Python) | [https://analytics-datagear.up.railway.app](https://analytics-datagear.up.railway.app) |
+| Saúde da API Python | [GET /saude](https://analytics-datagear.up.railway.app/saude) |
 
 ---
 

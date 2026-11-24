@@ -121,7 +121,7 @@ O controller de consultor também declara rotas `GET` e `DELETE`, mas a implemen
 
 ## Deploy
 
-O back-end está publicado em [Railway](https://backend-java-production-5e455b77.up.railway.app). No serviço de produção, configure `DB_PASSWORD`, `ANALYTICS_PYTHON_URL` e, se utilizada, `ETL_API_KEY`. A URL do Python deve ser `https://analytics-python-production.up.railway.app`.
+O back-end está publicado em [Railway](https://backend-datagear.up.railway.app). No serviço de produção, configure `DB_PASSWORD`, `ANALYTICS_PYTHON_URL` e, se utilizada, `ETL_API_KEY`. A URL do Python deve ser `https://analytics-datagear.up.railway.app`.
 
 O CORS está configurado em `SecurityConfig.java`, incluindo o front-end publicado e os endereços locais de desenvolvimento.
 

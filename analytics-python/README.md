@@ -4,10 +4,10 @@ Serviço analítico em Python responsável por receber dados do back-end Java, t
 
 | Serviço | Endereço |
 |---|---|
-| API em produção | [https://analytics-python-production.up.railway.app](https://analytics-python-production.up.railway.app) |
-| Verificação de saúde | [GET /saude](https://analytics-python-production.up.railway.app/saude) |
-| Swagger UI | [Documentação /docs](https://analytics-python-production.up.railway.app/docs) |
-| ReDoc | [Documentação /redoc](https://analytics-python-production.up.railway.app/redoc) |
+| API em produção | [https://analytics-datagear.up.railway.app](https://analytics-datagear.up.railway.app) |
+| Verificação de saúde | [GET /saude](https://analytics-datagear.up.railway.app/saude) |
+| Swagger UI | [Documentação /docs](https://analytics-datagear.up.railway.app/docs) |
+| ReDoc | [Documentação /redoc](https://analytics-datagear.up.railway.app/redoc) |
 
 ## Tecnologias
 
